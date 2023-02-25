@@ -50,7 +50,7 @@ export default defineConfig({
   server: {
     port: 3000
   },
- 
+
   resolve: {
     alias: {
       src: path.resolve(__dirname, './src')
@@ -243,7 +243,6 @@ Thêm vào file `src/index.css`
 @tailwind utilities;
 ```
 
-
 # IV - Config Router
 
 Install React Router Dom
@@ -252,4 +251,59 @@ Install React Router Dom
 yarn add react-router-dom
 ```
 
+## 1 - Tạo các components phục vụ cho việc Login/Logout/Resgister
 
+- Tạo các components Login/Logout/Resgister và ResgisterLayout (components này sẽ bao bọc Login/Logout/Resgister ở bên trong)
+
+## 2 - Tạo Custom Hook để Router
+
+- Ta dùng Hook useRoutes để tạo các path kèm theo elements
+
+```ts (router.tsx)
+import { useRoutes } from 'react-router-dom'
+import ProductLists from '../Pages/ProductList'
+import Login from '../Pages/Login'
+import Resgister from 'src/Pages/Resgister'
+import ResgisterLayout from 'src/Layouts/ResgisterLayout'
+
+export default function useRouteElements() {
+  const routeElements = useRoutes([
+    {
+      path: '/',
+      element: <ProductLists />
+    },
+    {
+      path: '/login',
+      element: (
+        <ResgisterLayout>
+          <Login />
+        </ResgisterLayout>
+      )
+    },
+    {
+      path: '/resgister',
+      element: (
+        <ResgisterLayout>
+          <Resgister />
+        </ResgisterLayout>
+      )
+    }
+  ])
+
+  return routeElements
+}
+```
+
+- Tại file App.tsx, import custom Hook (useRouteElements) mà ta đã tạo vào
+
+```ts (App.tsx)
+import useRouteElements from './Routers/router'
+
+function App() {
+  const routeElements = useRouteElements()
+
+  return <div>{routeElements}</div>
+}
+
+export default App
+```

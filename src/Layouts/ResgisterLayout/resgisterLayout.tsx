@@ -1,5 +1,13 @@
+//* Library
 import React from 'react'
 
-export default function ResgisterLayout() {
-  return <div>resgisterLayout</div>
+//* Interface
+interface ResgisterLayoutProps {
+  children?: React.ReactNode
+}
+
+export default function ResgisterLayout(props: ResgisterLayoutProps) {
+  const { children } = props
+
+  return <div>resgisterLayout {children}</div>
 }
