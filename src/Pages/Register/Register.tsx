@@ -1,6 +1,10 @@
+//* Library
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { getRules } from 'src/Utils/ruleForm'
+
+//* Components
+import Input from 'src/Components/Input'
 
 interface FormData {
   email: string
@@ -40,23 +44,35 @@ export default function Register() {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' noValidate onSubmit={onSubmit}>
               <div className='text-2xl'>Đăng ký</div>
-              <input type='email' className='mt-8' placeholder='Email' {...register('email', rules.email)} />
-              <input
+              <Input
+                name='email'
+                type='email'
+                className='mt-8'
+                placeholder='Email'
+                register={register}
+                rules={rules.email}
+                errorMessage={errors.email?.message}
+              />
+              <Input
+                name='password'
                 type='password'
                 className='mt-2'
                 // classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
                 placeholder='Password'
-                autoComplete='on'
-                {...register('password', rules.password)}
+                register={register}
+                rules={rules.password}
+                errorMessage={errors.password?.message}
               />
 
-              <input
+              <Input
+                name='confirm_password'
                 type='password'
                 className='mt-2'
                 // classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
                 placeholder='Confirm Password'
-                autoComplete='on'
-                {...register('confirm_password', { ...rules.confirm_password })}
+                register={register}
+                rules={rules.confirm_password}
+                errorMessage={errors.confirm_password?.message}
               />
 
               <div className='mt-2'>

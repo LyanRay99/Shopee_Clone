@@ -231,7 +231,21 @@ module.exports = {
   theme: {
     extend: {}
   },
-  plugins: []
+  plugins: [
+    // Phần này là cấu hình class container của tailwind lại theo các css property như bên dưới
+    plugin(function ({ addComponents, theme }) {
+      addComponents({
+        '.container': {
+          maxWidth: theme('columns.7xl'),
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          paddingLeft: theme('spacing.4'),
+          paddingRight: theme('spacing.4')
+        }
+      })
+    })
+    // require('@tailwindcss/line-clamp')
+  ]
 }
 ```
 
@@ -322,8 +336,9 @@ export default App
 - Cấu hình 1 file ruleForm.ts để tái sử dụng cho việc check form
 
 ```ts (register.tsx)
-...
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { getRules } from 'src/Utils/ruleForm'
 
 interface FormData {
   email: string
@@ -335,15 +350,50 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm<FormData>()
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
-  })
+  const rules = getRules(getValues)
 
+  const onSubmit = handleSubmit(
+    (data) => {
+      console.log(data)
+    },
+    (data) => {
+      const password = getValues('password')
+      console.log(password)
+      console.log(errors.email?.message)
+      console.log(errors.password?.message)
+      console.log(errors.confirm_password?.message)
+    }
+  )
 
-  ...
+  return (
+          ...
+              <input
+                type='email'
+                className='mt-8'
+                placeholder='Email' {...register('email', rules.email)}
+              />
+
+              <input
+                type='password'
+                className='mt-2'
+                placeholder='Password'
+                autoComplete='on'
+                {...register('password', rules.password)}
+              />
+
+              <input
+                type='password'
+                className='mt-2'
+                placeholder='Confirm Password'
+                autoComplete='on'
+                {...register('confirm_password', { ...rules.confirm_password })}
+              />
+          ...
+  )
 }
 ```
 
@@ -351,28 +401,12 @@ export default function Register() {
 - onValidate tại tag form để input (type email) không check validate email
 
 ```ts (Utils/ruleForm.ts)
-...
-import { rules } from 'src/Utils/ruleForm'
-
-...
-
-  return (
-    ...
-
-      <input type='email' className='mt-8' placeholder='Email' {...register('email', rules.email)} />
-      // Tương tự với password và confirm_password
-
-    ...
-  )
-```
-
-```ts (register.tsx)
-import type { RegisterOptions } from 'react-hook-form'
+import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
 
 type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
 
 //* Rule to check form register
-export const rules: Rules = {
+export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   //* email rule
   email: {
     required: {
@@ -380,7 +414,7 @@ export const rules: Rules = {
       message: 'Email la bat buoc'
     },
     pattern: {
-      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+      value: /^\S+@\S+\.\S+$/,
       message: 'Email ko dung dinh dang'
     },
     maxLength: {
@@ -422,7 +456,9 @@ export const rules: Rules = {
     minLength: {
       value: 6,
       message: 'Do dai tu 6 - 160 ky tu'
-    }
+    },
+    validate:
+      typeof getValues === 'function' ? (value) => value === getValues('password') || 'Nhap lai mat khau' : undefined
   }
-}
+})
 ```
