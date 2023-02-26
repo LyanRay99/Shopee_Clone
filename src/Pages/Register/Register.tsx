@@ -2,15 +2,14 @@
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { getRules } from 'src/Utils/ruleForm'
+import { schema, Schema } from 'src/Utils/ruleForm'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 //* Components
 import Input from 'src/Components/Input'
 
-interface FormData {
-  email: string
-  password: string
-  confirm_password: string
-}
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const {
@@ -18,7 +17,9 @@ export default function Register() {
     handleSubmit,
     getValues,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    resolver: yupResolver(registerSchema)
+  })
 
   const rules = getRules(getValues)
 
@@ -50,7 +51,6 @@ export default function Register() {
                 className='mt-8'
                 placeholder='Email'
                 register={register}
-                rules={rules.email}
                 errorMessage={errors.email?.message}
               />
               <Input
@@ -60,7 +60,6 @@ export default function Register() {
                 // classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
                 placeholder='Password'
                 register={register}
-                rules={rules.password}
                 errorMessage={errors.password?.message}
               />
 
@@ -71,7 +70,6 @@ export default function Register() {
                 // classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
                 placeholder='Confirm Password'
                 register={register}
-                rules={rules.confirm_password}
                 errorMessage={errors.confirm_password?.message}
               />
 
