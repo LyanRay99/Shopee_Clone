@@ -1,9 +1,9 @@
-import type { RegisterOptions } from 'react-hook-form'
+import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
 
 type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
 
 //* Rule to check form register
-export const rules: Rules = {
+export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   //* email rule
   email: {
     required: {
@@ -53,6 +53,8 @@ export const rules: Rules = {
     minLength: {
       value: 6,
       message: 'Do dai tu 6 - 160 ky tu'
-    }
+    },
+    validate:
+      typeof getValues === 'function' ? (value) => value === getValues('password') || 'Nhap lai mat khau' : undefined
   }
-}
+})

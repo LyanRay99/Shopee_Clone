@@ -36,11 +36,11 @@
 
 ## Công nghệ sử dụng
 
-- UI / CSS Library: Tailwindcss + HeadlessUI
-- State Management: React Query cho async state và React Context cho state thường
-- Form Management: React Hook Form
-- Router: React Router
-- Build tool: Vite
+- UI / CSS Library: Tailwindcss + HeadlessUI [https://tailwindcss.com/] [https://headlessui.com/]
+- State Management: React Query cho async state [https://react-query-v3.tanstack.com/] và React Context cho state thường
+- Form Management: React Hook Form [https://react-hook-form.com/]
+- Router: React Router Dom [https://reactrouter.com/en/main]
+- Build tool: Vite [https://vitejs.dev/]
 - API: Rest API dựa trên server mình cung cấp sẵn
 - Hỗ trợ đa ngôn ngữ với react.i18next
 - Hỗ trợ SEO với React Helmet
