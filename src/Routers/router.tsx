@@ -12,29 +12,34 @@ import { useRoutes } from 'react-router-dom'
 //* Components
 import ProductLists from '../Pages/ProductList'
 import Login from '../Pages/Login'
-import Resgister from 'src/Pages/Resgister'
-import ResgisterLayout from 'src/Layouts/ResgisterLayout'
+import Register from 'src/Pages/Register'
+import RegisterLayout from 'src/Layouts/RegisterLayout'
 
 export default function useRouteElements() {
   const routeElements = useRoutes([
     {
       path: '/',
-      element: <ProductLists />
+      // element: <ProductLists />
+      element: (
+        <RegisterLayout>
+          <Register />
+        </RegisterLayout>
+      )
     },
     {
       path: '/login',
       element: (
-        <ResgisterLayout>
+        <RegisterLayout>
           <Login />
-        </ResgisterLayout>
+        </RegisterLayout>
       )
     },
     {
-      path: '/resgister',
+      path: '/register',
       element: (
-        <ResgisterLayout>
-          <Resgister />
-        </ResgisterLayout>
+        <RegisterLayout>
+          <Register />
+        </RegisterLayout>
       )
     }
   ])

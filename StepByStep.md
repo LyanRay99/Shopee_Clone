@@ -59,7 +59,7 @@ export default defineConfig({
 })
 ```
 
-# II - Install Eslint + Prettier
+# II - Install Eslint + Prettier + Tailwind
 
 > Chúng ta sẽ cài hơi nhiều package 1 tí vì chúng ta setup từ đầu, còn Create React App setup sẵn 1 số thứ về ESLint rồi.
 
@@ -199,7 +199,7 @@ Thêm script mới vào `package.json`
   },
 ```
 
-## II.1 - Cài editorconfig
+## 1 - Cài editorconfig
 
 Tạo file `.editorconfig` ở thư mục root
 
@@ -209,11 +209,11 @@ indent_size = 2
 indent_style = space
 ```
 
-### II.2 - Cấu hình tsconfig.json
+## 2 - Cấu hình tsconfig.json
 
 Set `"target": "ES2015"` và `"baseUrl": "src"` trong `compilerOptions`
 
-# III - Install Tailwind
+## 3 - Install Tailwind
 
 Cài các package dưới đây: Tham khảo [https://tailwindcss.com/docs/guides/vite](https://tailwindcss.com/docs/guides/vite)
 
@@ -243,7 +243,7 @@ Thêm vào file `src/index.css`
 @tailwind utilities;
 ```
 
-# IV - Config Router
+# III - Config Router
 
 Install React Router Dom
 
@@ -306,4 +306,123 @@ function App() {
 }
 
 export default App
+```
+
+# IV - Code UI Resgister + Login
+
+**Component**
+
+- Hearder + Footer (dùng chung cho Login và Register)
+- Resgister
+- Login
+
+# V - Form Management with React Hook Form
+
+- Tạo các rule để check Email, Passwrd, Confirm_password
+- Cấu hình 1 file ruleForm.ts để tái sử dụng cho việc check form
+
+```ts (register.tsx)
+...
+import { useForm } from 'react-hook-form'
+
+interface FormData {
+  email: string
+  password: string
+  confirm_password: string
+}
+
+export default function Register() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>()
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+  })
+
+
+  ...
+}
+```
+
+- onSubmit function onSubmit tại tag form
+- onValidate tại tag form để input (type email) không check validate email
+
+```ts (Utils/ruleForm.ts)
+...
+import { rules } from 'src/Utils/ruleForm'
+
+...
+
+  return (
+    ...
+
+      <input type='email' className='mt-8' placeholder='Email' {...register('email', rules.email)} />
+      // Tương tự với password và confirm_password
+
+    ...
+  )
+```
+
+```ts (register.tsx)
+import type { RegisterOptions } from 'react-hook-form'
+
+type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
+
+//* Rule to check form register
+export const rules: Rules = {
+  //* email rule
+  email: {
+    required: {
+      value: true,
+      message: 'Email la bat buoc'
+    },
+    pattern: {
+      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+      message: 'Email ko dung dinh dang'
+    },
+    maxLength: {
+      value: 160,
+      message: 'Do dai tu 5 - 160 ky tu'
+    },
+    minLength: {
+      value: 5,
+      message: 'Do dai tu 5 - 160 ky tu'
+    }
+  },
+
+  //* password rule
+  password: {
+    required: {
+      value: true,
+      message: 'Password la bat buoc'
+    },
+    maxLength: {
+      value: 160,
+      message: 'Do dai tu 6 - 160 ky tu'
+    },
+    minLength: {
+      value: 6,
+      message: 'Do dai tu 6 - 160 ky tu'
+    }
+  },
+
+  //* confirm password rule
+  confirm_password: {
+    required: {
+      value: true,
+      message: 'Nhap lai password'
+    },
+    maxLength: {
+      value: 160,
+      message: 'Do dai tu 6 - 160 ky tu'
+    },
+    minLength: {
+      value: 6,
+      message: 'Do dai tu 6 - 160 ky tu'
+    }
+  }
+}
 ```
