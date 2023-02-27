@@ -1,40 +1,80 @@
 //* Library
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { getRules } from 'src/Utils/ruleForm'
-import { schema, Schema } from 'src/Utils/ruleForm'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { omit } from 'lodash'
 
-//* Components
+//* Utils
+import { schema, Schema } from 'src/Utils/ruleForm'
+import { ResponseAPI } from 'src/@types/utils.type'
+import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 import Input from 'src/Components/Input'
 
+//* Api
+import { registerAccount } from 'src/Api/auth.api'
+
+//* Type
 type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
 const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
+//* Component
 export default function Register() {
   const {
     register,
     handleSubmit,
-    getValues,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(registerSchema)
   })
 
-  const rules = getRules(getValues)
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+  })
 
-  const onSubmit = handleSubmit(
-    (data) => {
-      console.log(data)
-    },
-    (data) => {
-      const password = getValues('password')
-      console.log(password)
-      console.log(errors.email?.message)
-      console.log(errors.password?.message)
-      console.log(errors.confirm_password?.message)
-    }
-  )
+  //* onSubmit form sẽ nhận được data => gán vào body và dùng omit để loại bỏ đi "confirm_password"
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ['confirm_password'])
+
+    registerAccountMutation.mutate(body, {
+      //* Xử lý logic khi register thành công
+      onSuccess: (data) => {
+        console.log(data)
+      },
+
+      //* Xử lý logic khi register thất bại
+      onError: (error) => {
+        if (isAxiosError_UnprocessableEntity<ResponseAPI<Omit<FormData, 'confirm_password'>>>(error)) {
+          const formError = error.response?.data.data
+
+          //* Cách 1
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof Omit<FormData, 'confirm_password'>, {
+                message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+                type: 'Server'
+              })
+            })
+          }
+
+          //* Cách 2
+          // if (formError?.email) {
+          //   setError('email', {
+          //     message: formError.email,
+          //     type: 'Server'
+          //   })
+          // }
+          // if (formError?.password) {
+          //   setError('password', {
+          //     message: formError.password,
+          //     type: 'Server'
+          //   })
+          // }
+        }
+      }
+    })
+  })
 
   return (
     <div className='bg-orange'>
