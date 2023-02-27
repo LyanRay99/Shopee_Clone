@@ -330,7 +330,7 @@ export default App
 - Resgister
 - Login
 
-# V - Form Management with React Hook Form
+# V - Form Management with React Hook Form + Yup
 
 - Tạo các rule để check Email, Passwrd, Confirm_password
 - Cấu hình 1 file ruleForm.ts để tái sử dụng cho việc check form
