@@ -8,3 +8,4 @@ import http from 'src/Utils/http'
  ** Return về http... để call api (truyền vào baseURL và giá trị body)
  */
 export const registerAccount = (body: { email: string; password: string }) => http.post<Auth>('/register', body)
+export const loginAccount = (body: { email: string; password: string }) => http.post<Auth>('/login', body)
