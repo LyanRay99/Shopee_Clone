@@ -50,7 +50,7 @@ export default defineConfig({
   server: {
     port: 3000
   },
- 
+
   resolve: {
     alias: {
       src: path.resolve(__dirname, './src')
@@ -59,7 +59,7 @@ export default defineConfig({
 })
 ```
 
-# II - Install Eslint + Prettier
+# II - Install Eslint + Prettier + Tailwind
 
 > Chúng ta sẽ cài hơi nhiều package 1 tí vì chúng ta setup từ đầu, còn Create React App setup sẵn 1 số thứ về ESLint rồi.
 
@@ -199,7 +199,7 @@ Thêm script mới vào `package.json`
   },
 ```
 
-## II.1 - Cài editorconfig
+## 1 - Cài editorconfig
 
 Tạo file `.editorconfig` ở thư mục root
 
@@ -209,11 +209,11 @@ indent_size = 2
 indent_style = space
 ```
 
-### II.2 - Cấu hình tsconfig.json
+## 2 - Cấu hình tsconfig.json
 
 Set `"target": "ES2015"` và `"baseUrl": "src"` trong `compilerOptions`
 
-# III - Install Tailwind
+## 3 - Install Tailwind
 
 Cài các package dưới đây: Tham khảo [https://tailwindcss.com/docs/guides/vite](https://tailwindcss.com/docs/guides/vite)
 
@@ -231,7 +231,21 @@ module.exports = {
   theme: {
     extend: {}
   },
-  plugins: []
+  plugins: [
+    // Phần này là cấu hình class container của tailwind lại theo các css property như bên dưới
+    plugin(function ({ addComponents, theme }) {
+      addComponents({
+        '.container': {
+          maxWidth: theme('columns.7xl'),
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          paddingLeft: theme('spacing.4'),
+          paddingRight: theme('spacing.4')
+        }
+      })
+    })
+    // require('@tailwindcss/line-clamp')
+  ]
 }
 ```
 
@@ -243,8 +257,7 @@ Thêm vào file `src/index.css`
 @tailwind utilities;
 ```
 
-
-# IV - Config Router
+# III - Config Router
 
 Install React Router Dom
 
@@ -252,4 +265,200 @@ Install React Router Dom
 yarn add react-router-dom
 ```
 
+## 1 - Tạo các components phục vụ cho việc Login/Logout/Resgister
 
+- Tạo các components Login/Logout/Resgister và ResgisterLayout (components này sẽ bao bọc Login/Logout/Resgister ở bên trong)
+
+## 2 - Tạo Custom Hook để Router
+
+- Ta dùng Hook useRoutes để tạo các path kèm theo elements
+
+```ts (router.tsx)
+import { useRoutes } from 'react-router-dom'
+import ProductLists from '../Pages/ProductList'
+import Login from '../Pages/Login'
+import Resgister from 'src/Pages/Resgister'
+import ResgisterLayout from 'src/Layouts/ResgisterLayout'
+
+export default function useRouteElements() {
+  const routeElements = useRoutes([
+    {
+      path: '/',
+      element: <ProductLists />
+    },
+    {
+      path: '/login',
+      element: (
+        <ResgisterLayout>
+          <Login />
+        </ResgisterLayout>
+      )
+    },
+    {
+      path: '/resgister',
+      element: (
+        <ResgisterLayout>
+          <Resgister />
+        </ResgisterLayout>
+      )
+    }
+  ])
+
+  return routeElements
+}
+```
+
+- Tại file App.tsx, import custom Hook (useRouteElements) mà ta đã tạo vào
+
+```ts (App.tsx)
+import useRouteElements from './Routers/router'
+
+function App() {
+  const routeElements = useRouteElements()
+
+  return <div>{routeElements}</div>
+}
+
+export default App
+```
+
+# IV - Code UI Resgister + Login
+
+**Component**
+
+- Hearder + Footer (dùng chung cho Login và Register)
+- Resgister
+- Login
+
+# V - Form Management with React Hook Form
+
+- Tạo các rule để check Email, Passwrd, Confirm_password
+- Cấu hình 1 file ruleForm.ts để tái sử dụng cho việc check form
+
+```ts (register.tsx)
+import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { getRules } from 'src/Utils/ruleForm'
+
+interface FormData {
+  email: string
+  password: string
+  confirm_password: string
+}
+
+export default function Register() {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors }
+  } = useForm<FormData>()
+
+  const rules = getRules(getValues)
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      console.log(data)
+    },
+    (data) => {
+      const password = getValues('password')
+      console.log(password)
+      console.log(errors.email?.message)
+      console.log(errors.password?.message)
+      console.log(errors.confirm_password?.message)
+    }
+  )
+
+  return (
+          ...
+              <input
+                type='email'
+                className='mt-8'
+                placeholder='Email' {...register('email', rules.email)}
+              />
+
+              <input
+                type='password'
+                className='mt-2'
+                placeholder='Password'
+                autoComplete='on'
+                {...register('password', rules.password)}
+              />
+
+              <input
+                type='password'
+                className='mt-2'
+                placeholder='Confirm Password'
+                autoComplete='on'
+                {...register('confirm_password', { ...rules.confirm_password })}
+              />
+          ...
+  )
+}
+```
+
+- onSubmit function onSubmit tại tag form
+- onValidate tại tag form để input (type email) không check validate email
+
+```ts (Utils/ruleForm.ts)
+import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
+
+type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
+
+//* Rule to check form register
+export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
+  //* email rule
+  email: {
+    required: {
+      value: true,
+      message: 'Email la bat buoc'
+    },
+    pattern: {
+      value: /^\S+@\S+\.\S+$/,
+      message: 'Email ko dung dinh dang'
+    },
+    maxLength: {
+      value: 160,
+      message: 'Do dai tu 5 - 160 ky tu'
+    },
+    minLength: {
+      value: 5,
+      message: 'Do dai tu 5 - 160 ky tu'
+    }
+  },
+
+  //* password rule
+  password: {
+    required: {
+      value: true,
+      message: 'Password la bat buoc'
+    },
+    maxLength: {
+      value: 160,
+      message: 'Do dai tu 6 - 160 ky tu'
+    },
+    minLength: {
+      value: 6,
+      message: 'Do dai tu 6 - 160 ky tu'
+    }
+  },
+
+  //* confirm password rule
+  confirm_password: {
+    required: {
+      value: true,
+      message: 'Nhap lai password'
+    },
+    maxLength: {
+      value: 160,
+      message: 'Do dai tu 6 - 160 ky tu'
+    },
+    minLength: {
+      value: 6,
+      message: 'Do dai tu 6 - 160 ky tu'
+    },
+    validate:
+      typeof getValues === 'function' ? (value) => value === getValues('password') || 'Nhap lai mat khau' : undefined
+  }
+})
+```
