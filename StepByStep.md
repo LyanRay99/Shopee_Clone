@@ -462,3 +462,18 @@ export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   }
 })
 ```
+
+**_ cần hoàn thiện _**
+Code logic Register/Login
+
+# VI -
+
+**Flow code**
+
+- User login
+  => thành công => save token into session/storage => chuyển đến trang chủ web
+  => ko thành công => nhập lại account
+
+- User Register
+  => thành công => chuyển đến login
+  => ko thành công => nhập lại thông tin register
