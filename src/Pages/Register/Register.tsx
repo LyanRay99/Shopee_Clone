@@ -34,7 +34,7 @@ export default function Register() {
   })
 
   //* Lấy setIsAuthenticated ra từ AppContext
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
 
   const registerAccountMutation = useMutation({
@@ -49,6 +49,7 @@ export default function Register() {
       //* Xử lý logic khi register thành công
       onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/')
       },
 

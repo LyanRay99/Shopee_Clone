@@ -33,7 +33,7 @@ export default function Login() {
   })
 
   //* Lấy setIsAuthenticated ra từ AppContext
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
 
   const loginAccountMutation = useMutation({
@@ -50,6 +50,7 @@ export default function Login() {
        */
       onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/')
       },
 
