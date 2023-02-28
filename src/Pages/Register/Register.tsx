@@ -1,13 +1,15 @@
 //* Library
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { omit } from 'lodash'
+import { useContext } from 'react'
+import { AppContext } from 'src/Contexts/app.context'
 
 //* Utils
 import { schema, Schema } from 'src/Utils/ruleForm'
-import { ResponseAPI } from 'src/@types/utils.type'
+import { ErrorResponse } from 'src/@types/utils.type'
 import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 import Input from 'src/Components/Input'
 
@@ -29,6 +31,10 @@ export default function Register() {
     resolver: yupResolver(registerSchema)
   })
 
+  //* Lấy setIsAuthenticated ra từ AppContext
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
   })
@@ -40,12 +46,13 @@ export default function Register() {
     registerAccountMutation.mutate(body, {
       //* Xử lý logic khi register thành công
       onSuccess: (data) => {
-        console.log(data)
+        setIsAuthenticated(true)
+        navigate('/')
       },
 
       //* Xử lý logic khi register thất bại
       onError: (error) => {
-        if (isAxiosError_UnprocessableEntity<ResponseAPI<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (isAxiosError_UnprocessableEntity<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
 
           //* Cách 1

@@ -1,18 +1,21 @@
 //* Library
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { omit } from 'lodash'
+import { useContext } from 'react'
+import { AppContext } from 'src/Contexts/app.context'
 
 //* Utils
 import { schema, Schema } from 'src/Utils/ruleForm'
-import { ResponseAPI } from 'src/@types/utils.type'
+import { ErrorResponse } from 'src/@types/utils.type'
 import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 import Input from 'src/Components/Input'
 
 //* Api
 import { loginAccount } from 'src/Api/auth.api'
+import App from 'src/App'
 
 //* Type
 type FormData = Pick<Schema, 'email' | 'password'>
@@ -28,6 +31,10 @@ export default function Login() {
     resolver: yupResolver(loginSchema)
   })
 
+  //* Lấy setIsAuthenticated ra từ AppContext
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+
   const loginAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => loginAccount(body)
   })
@@ -35,14 +42,19 @@ export default function Login() {
   //* onSubmit form sẽ nhận được data => gán vào body và dùng omit để loại bỏ đi "confirm_password"
   const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
-      //* Xử lý logic khi login thành công
+      /**
+       ** login thành công:
+       ** + set isAuthenticated = true
+       ** + điều hướng nó đến trang listProduct bằng useNavigate
+       */
       onSuccess: (data) => {
-        console.log(data)
+        setIsAuthenticated(true)
+        navigate('/')
       },
 
       //* Xử lý logic khi login thất bại
       onError: (error) => {
-        if (isAxiosError_UnprocessableEntity<ResponseAPI<FormData>>(error)) {
+        if (isAxiosError_UnprocessableEntity<ErrorResponse<FormData>>(error)) {
           const formError = error.response?.data.data
 
           //* Cách 1

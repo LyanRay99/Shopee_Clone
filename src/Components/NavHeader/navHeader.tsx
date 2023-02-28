@@ -1,6 +1,35 @@
+//* Library
+import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { AppContext } from 'src/Contexts/app.context'
+import path from 'src/Constants/path'
+import { logoutAccount } from 'src/Api/auth.api'
+import { useMutation } from '@tanstack/react-query'
+
+//* Components
 import Popover from '../Popover'
 
 export default function NavHeader() {
+  //* lấy isAuthenticated từ AppContext
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  // console.log(logout())
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutAccount,
+    onSuccess: (data) => {
+      setIsAuthenticated(false)
+      // setProfile(null)
+      // queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+  })
+
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
+
   return (
     <div className='flex justify-end'>
       <Popover
@@ -40,7 +69,7 @@ export default function NavHeader() {
           <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
         </svg>
       </Popover>
-      {/* {isAuthenticated && (
+      {isAuthenticated && (
         <Popover
           className='ml-6 flex cursor-pointer items-center py-1 hover:text-white/70'
           renderPopover={
@@ -67,9 +96,9 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
+            {/* <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' /> */}
           </div>
-          <div>{profile?.email}</div>
+          {/* <div>{profile?.email}</div> */}
         </Popover>
       )}
       {!isAuthenticated && (
@@ -82,7 +111,7 @@ export default function NavHeader() {
             Đăng nhập
           </Link>
         </div>
-      )} */}
+      )}
     </div>
   )
 }

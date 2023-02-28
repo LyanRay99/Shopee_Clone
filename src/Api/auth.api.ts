@@ -9,3 +9,4 @@ import http from 'src/Utils/http'
  */
 export const registerAccount = (body: { email: string; password: string }) => http.post<Auth>('/register', body)
 export const loginAccount = (body: { email: string; password: string }) => http.post<Auth>('/login', body)
+export const logoutAccount = () => http.post('/logout')
