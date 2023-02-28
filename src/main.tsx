@@ -5,6 +5,7 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AppProvider } from './Contexts/app.context'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +21,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       {/* Cửa sổ Devtool của React Query */}
       <QueryClientProvider client={queryClient}>
-        <App />
+        {/* React Context API */}
+        <AppProvider>
+          <App />
+        </AppProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>

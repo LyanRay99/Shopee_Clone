@@ -330,7 +330,7 @@ export default App
 - Resgister
 - Login
 
-# V - Form Management with React Hook Form
+# V - Form Management with React Hook Form + Yup
 
 - Tạo các rule để check Email, Passwrd, Confirm_password
 - Cấu hình 1 file ruleForm.ts để tái sử dụng cho việc check form
@@ -462,3 +462,18 @@ export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   }
 })
 ```
+
+**_ cần hoàn thiện _**
+Code logic Register/Login
+
+# VI -
+
+**Flow code**
+
+- User login
+  => thành công => save token into session/storage => chuyển đến trang chủ web
+  => ko thành công => nhập lại account
+
+- User Register
+  => thành công => chuyển đến login
+  => ko thành công => nhập lại thông tin register

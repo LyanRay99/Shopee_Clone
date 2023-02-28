@@ -37,6 +37,7 @@
 ## Công nghệ sử dụng
 
 - UI / CSS Library: Tailwindcss + HeadlessUI [https://tailwindcss.com/] [https://headlessui.com/]
+- Animation UI: Floating UI [https://floating-ui.com/]
 - State Management: React Query cho async state [https://react-query-v3.tanstack.com/] và React Context cho state thường
 - Form Management: React Hook Form [https://react-hook-form.com/] + Yup [https://github.com/jquense/yup]
 - Router: React Router Dom [https://reactrouter.com/en/main]
