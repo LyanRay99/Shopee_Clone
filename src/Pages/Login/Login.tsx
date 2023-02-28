@@ -12,10 +12,10 @@ import { schema, Schema } from 'src/Utils/ruleForm'
 import { ErrorResponse } from 'src/@types/utils.type'
 import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 import Input from 'src/Components/Input'
+import Button from 'src/Components/Button'
 
 //* Api
 import { loginAccount } from 'src/Api/auth.api'
-import App from 'src/App'
 
 //* Type
 type FormData = Pick<Schema, 'email' | 'password'>
@@ -113,12 +113,14 @@ export default function Login() {
                 // autoComplete='on'
               />
               <div className='mt-3'>
-                <button
+                <Button
                   type='submit'
                   className='flex  w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                  isLoading={loginAccountMutation.isLoading}
+                  disabled={loginAccountMutation.isLoading}
                 >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn chưa có tài khoản?</span>

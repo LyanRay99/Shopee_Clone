@@ -12,6 +12,7 @@ import { schema, Schema } from 'src/Utils/ruleForm'
 import { ErrorResponse } from 'src/@types/utils.type'
 import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 import Input from 'src/Components/Input'
+import Button from 'src/Components/Button'
 
 //* Api
 import { registerAccount } from 'src/Api/auth.api'
@@ -121,9 +122,13 @@ export default function Register() {
               />
 
               <div className='mt-2'>
-                <button className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'>
+                <Button
+                  className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                  isLoading={registerAccountMutation.isLoading}
+                  disabled={registerAccountMutation.isLoading}
+                >
                   Đăng ký
-                </button>
+                </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn đã có tài khoản?</span>
