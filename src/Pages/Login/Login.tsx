@@ -13,6 +13,7 @@ import { ErrorResponse } from 'src/@types/utils.type'
 import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 import Input from 'src/Components/Input'
 import Button from 'src/Components/Button'
+import path from 'src/Constants/path'
 
 //* Api
 import { loginAccount } from 'src/Api/auth.api'
@@ -124,7 +125,7 @@ export default function Login() {
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn chưa có tài khoản?</span>
-                <Link className='ml-1 text-red-400' to='/register'>
+                <Link className='ml-1 text-red-400' to={path.register}>
                   Đăng ký
                 </Link>
               </div>

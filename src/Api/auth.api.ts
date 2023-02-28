@@ -1,5 +1,6 @@
 import { Auth } from './../@types/auth.type'
 import http from 'src/Utils/http'
+import path from 'path'
 
 /**
  ** Do ta đã config Api bằng axios rồi nên ta sẽ tại các request tại đây

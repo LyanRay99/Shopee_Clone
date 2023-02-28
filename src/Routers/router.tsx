@@ -9,6 +9,9 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from 'src/Contexts/app.context'
 
+//* Utils
+import path from 'src/Constants/path'
+
 //* Components
 import Login from '../Pages/Login'
 import Register from 'src/Pages/Register'
@@ -23,7 +26,7 @@ import Profile from 'src/Pages/Profile'
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
   // console.log(isAuthenticated)
-  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
 }
 
 //* Function này dùng để ngăn chặn user vào trang Register hoặc Login khi đã login rồi
@@ -39,11 +42,11 @@ function RejectedRoute() {
 export default function useRouteElements() {
   const routeElements = useRoutes([
     {
-      path: '/',
+      path: '',
       element: <RejectedRoute />,
       children: [
         {
-          path: '/login',
+          path: path.login,
           element: (
             <RegisterLayout>
               <Login />
@@ -51,7 +54,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: '/register',
+          path: path.register,
           element: (
             <RegisterLayout>
               <Register />
@@ -61,11 +64,11 @@ export default function useRouteElements() {
       ]
     },
     {
-      path: '/',
+      path: '',
       element: <ProtectedRoute />,
       children: [
         {
-          path: '/user/profile',
+          path: path.profile,
           element: (
             <MainLayout>
               <Profile />
@@ -75,7 +78,7 @@ export default function useRouteElements() {
       ]
     },
     {
-      path: '/',
+      path: path.home,
       index: true,
       element: (
         <MainLayout>

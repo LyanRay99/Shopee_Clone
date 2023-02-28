@@ -5,12 +5,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button(props: ButtonProps) {
+  //* lấy ra các property cần thiết
   const { isLoading, className, disabled, children, ...rest } = props
-
+  //* nếu button disabled thì sẽ gán thêm class 'cursor-not-allowed' ngăn ko cho user click nữa
   const newClassName = disabled ? className + 'cursor-not-allowed' : className
 
   return (
     <button className={newClassName} disabled={disabled} {...rest}>
+      {/* nếu đã click và đang trong quá trình loading (isLoading = true) thì sẽ chạy hiệu ứng xoay tại button login/register */}
       {isLoading && (
         <svg
           aria-hidden='true'

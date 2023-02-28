@@ -1,4 +1,3 @@
-import { GetAccessToken } from './auth'
 //* Library
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { HttpStatusCode } from 'src/Constants/httpStatusCode'
@@ -6,6 +5,8 @@ import { toast } from 'react-toastify'
 import { Auth } from './../@types/auth.type'
 import { SaveAccessToken } from './auth'
 import { ClearAccessToken } from './auth'
+import { GetAccessToken } from './auth'
+import path from 'src/Constants/path'
 
 //* Config Axios
 class Http {
@@ -45,10 +46,10 @@ class Http {
         const { url } = response.config
         // console.log(url)
         //* check xem user đang login/register hay logout để lưu/xóa token vào localStorage và set lại this.accessToken
-        if (url === '/login' || url === '/register') {
+        if (url === path.login || url === path.register) {
           this.accessToken = (response.data as Auth).data.access_token
           SaveAccessToken(this.accessToken)
-        } else if (url === '/logout') {
+        } else if (url === path.logout) {
           this.accessToken = ''
           ClearAccessToken()
         }
