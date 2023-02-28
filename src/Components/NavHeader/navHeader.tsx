@@ -12,7 +12,6 @@ import Popover from '../Popover'
 export default function NavHeader() {
   //* lấy isAuthenticated từ AppContext
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
-  // console.log(logout())
 
   const logoutMutation = useMutation({
     mutationFn: logoutAccount,
