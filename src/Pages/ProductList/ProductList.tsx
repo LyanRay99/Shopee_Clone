@@ -1,5 +1,5 @@
 //* Library
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import useQueryParams from 'src/Hooks/useQueryParams'
 import { getProduct } from 'src/Api/product.api'
@@ -8,10 +8,11 @@ import { getProduct } from 'src/Api/product.api'
 import AsideFilter from './Components/AsideFilter'
 import SortProductList from './Components/SortProductList'
 import Product from './Components/Product'
+import Pagination from 'src/Components/Paginate'
 
 export default function ProductLists() {
   const queryParams = useQueryParams()
-
+  const [page, setPage] = useState(1)
   /**
    ** Ta truyền queryParams vào để khi mà nó thay đổi thì useQuery mới nhận biết
    ** Sau đó call api để get data phù hợp với query đó
@@ -53,6 +54,7 @@ export default function ProductLists() {
                 ))}
             </div>
             {/* <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} /> */}
+            <Pagination page={page} setPage={setPage} pageSize={4} />
           </div>
         </div>
         {/* )} */}
