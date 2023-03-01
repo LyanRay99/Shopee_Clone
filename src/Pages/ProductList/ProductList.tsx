@@ -1,9 +1,12 @@
 //* Library
 import { useQuery } from '@tanstack/react-query'
 import { omitBy, isUndefined } from 'lodash'
+
+//* Utils
 import useQueryParams from 'src/Hooks/useQueryParams'
 import { getProduct } from 'src/Api/product.api'
 import { ProductListConfig } from 'src/@types/product.type'
+import { getCategory } from 'src/Api/category.api'
 
 //* Components
 import AsideFilter from './Components/AsideFilter'
@@ -24,13 +27,14 @@ export default function ProductLists() {
       //* set page = 1 để khi queryParams.page là underfined thì default là page 1
       page: queryParams.page || '1',
       limit: queryParams.limit || '4',
-      sort_by: queryParams.sort_by,
-      exclude: queryParams.exclude,
-      name: queryParams.name,
       order: queryParams.order,
+      sort_by: queryParams.sort_by,
+      category: queryParams.category,
+      exclude: queryParams.exclude,
+      rating_filter: queryParams.rating_filter,
       price_max: queryParams.price_max,
       price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter
+      name: queryParams.name
     },
     isUndefined
   )
@@ -49,6 +53,18 @@ export default function ProductLists() {
     keepPreviousData: true
   })
 
+  /**
+   ** Tương tự như sort thì filter ta cũng dùng useQuery để get data với từng category tương ứng
+   */
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => {
+      return getCategory()
+    },
+    //* keepPreviousData để giữ cho data ko bị underfined khi chuyển trang
+    keepPreviousData: true
+  })
+
   return (
     <div className='bg-gray-200 py-6'>
       {/* <Helmet>
@@ -59,14 +75,15 @@ export default function ProductLists() {
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>
             <div className='col-span-3'>
-              <AsideFilter
-              // queryConfig={queryConfig} categories={categoriesData?.data.data || []}
-              />
+              {/* Completed: Filter product */}
+              <AsideFilter queryConfig={queryConfig} categories={categoriesData?.data.data || []} />
             </div>
             <div className='col-span-9'>
+              {/* Completed: sort product */}
               <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
               <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {/* 
+                Completed: Binding data
                 Data ít quá nên map 3 lần với limit = 10 để có nhiều page_size hơn.
                 Nếu để mặc định limit = 30 thì page chỉ được 2 thôi
                  */}
@@ -89,7 +106,7 @@ export default function ProductLists() {
                     </div>
                   ))}
               </div>
-              {/* phân trang */}
+              {/* Completed: phân trang */}
               <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
             </div>
           </div>

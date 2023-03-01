@@ -1,19 +1,32 @@
 //* Library
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router-dom'
+import classNames from 'classnames'
 
 //* Utils
 import path from 'src/Constants/path'
 import Button from 'src/Components/Button'
 import Input from 'src/Components/Input'
+import { QueryConfig } from '../../ProductList'
+import { Category } from 'src/@types/category.type'
 
-export default function AsideFilter() {
+interface AsideFilterProps {
+  queryConfig: QueryConfig
+  categories: Category[]
+}
+
+export default function AsideFilter(props: AsideFilterProps) {
+  const { queryConfig, categories } = props
+
+  const { category } = queryConfig
+
   return (
     <div className='py-4'>
+      {/* Completed: Show all products */}
       <Link
         to={path.home}
-        // className={classNames('flex items-center font-bold', {
-        //   'text-orange': !category
-        // })}
+        className={classNames('flex items-center font-bold', {
+          'text-orange': !category
+        })}
       >
         <svg viewBox='0 0 12 10' className='mr-3 h-4 w-3 fill-current'>
           <g fillRule='evenodd' stroke='none' strokeWidth={1}>
@@ -30,9 +43,12 @@ export default function AsideFilter() {
         </svg>
         {/* {t('aside filter.all categories')} */}
       </Link>
+
       <div className='my-4 h-[1px] bg-gray-300' />
+
+      {/* Completed: Filter product flow category */}
       <ul>
-        {/* {categories.map((categoryItem) => {
+        {categories.map((categoryItem) => {
           const isActive = category === categoryItem._id
           return (
             <li className='py-2 pl-2' key={categoryItem._id}>
@@ -57,8 +73,9 @@ export default function AsideFilter() {
               </Link>
             </li>
           )
-        })} */}
+        })}
       </ul>
+
       <Link to={path.home} className='mt-4 flex items-center font-bold uppercase'>
         <svg
           enableBackground='new 0 0 15 15'
