@@ -1,5 +1,4 @@
 //* Library
-import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { omitBy, isUndefined } from 'lodash'
 import useQueryParams from 'src/Hooks/useQueryParams'
@@ -24,7 +23,7 @@ export default function ProductLists() {
     {
       //* set page = 1 để khi queryParams.page là underfined thì default là page 1
       page: queryParams.page || '1',
-      limit: queryParams.limit || '3',
+      limit: queryParams.limit || '4',
       sort_by: queryParams.sort_by,
       exclude: queryParams.exclude,
       name: queryParams.name,
@@ -65,7 +64,7 @@ export default function ProductLists() {
               />
             </div>
             <div className='col-span-9'>
-              {/* <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} /> */}
+              <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
               <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {/* 
                 Data ít quá nên map 3 lần với limit = 10 để có nhiều page_size hơn.
