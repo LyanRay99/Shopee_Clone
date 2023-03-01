@@ -10,11 +10,13 @@ import { useMutation } from '@tanstack/react-query'
 import Popover from '../Popover'
 
 export default function NavHeader() {
-  //* lấy isAuthenticated từ AppContext
+  //* lấy isAuthenticated từ AppContext (check xem user đã đăng nhập chưa để show data bên dưới hoặc thưc hiện logout)
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
 
   const logoutMutation = useMutation({
     mutationFn: logoutAccount,
+    //* Khi logout thành công sẽ set isAuthenticated = false để nhận biết user đã logout
+    //* Sau đó, sẽ xóa data profile của user ở localStorage
     onSuccess: (data) => {
       setIsAuthenticated(false)
       setProfile(null)
@@ -68,6 +70,7 @@ export default function NavHeader() {
           <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
         </svg>
       </Popover>
+      {/* show UI này khi user đã login */}
       {isAuthenticated && (
         <Popover
           className='ml-6 flex cursor-pointer items-center py-1 hover:text-white/70'
@@ -100,6 +103,7 @@ export default function NavHeader() {
           <div>{profile?.email}</div>
         </Popover>
       )}
+      {/* Show UI này khi user chưa login */}
       {!isAuthenticated && (
         <div className='flex items-center'>
           <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>

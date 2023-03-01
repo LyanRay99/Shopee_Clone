@@ -3,7 +3,7 @@ import type { UseFormRegister, RegisterOptions } from 'react-hook-form'
 
 //* Tạo input component để tái sử dụng trong form
 //* các property mà input nhận vào (được khai báo type trong interface)
-//* cứ pháp extends... để kế thừa lại các thuộc tính sẵn có của tag input trong HTML
+//* cứ pháp "extends InputHTMLAttributes<HTMLInputElement>" để kế thừa lại các thuộc tính sẵn có của tag input trong HTML
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
   register?: UseFormRegister<any>

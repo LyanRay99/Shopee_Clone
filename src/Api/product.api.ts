@@ -4,6 +4,8 @@ import { SuccessResponse } from 'src/@types/utils.type'
 import path from 'src/Constants/path'
 
 //* Call API Product flow Params
+//* Vẫn dùng lại Type 'SuccessResponse' vì trong này đẫ khai báo type của các Property được trả về là "message" và "data"
+//* Type 'ProductList' được truyền vào đối số data'SuccessResponse' và được gán cho property Data mà API trả về
 export const getProduct = (params: ProductListConfig) =>
   http.get<SuccessResponse<ProductList>>(path.products, {
     params

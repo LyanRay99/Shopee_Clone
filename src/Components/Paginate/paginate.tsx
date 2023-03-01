@@ -1,14 +1,14 @@
 //* Library
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 //* Utils
 import path from 'src/Constants/path'
+import { QueryConfig } from 'src/Pages/ProductList/ProductList'
 
 interface PaginateProps {
-  page: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
+  queryConfig: QueryConfig
   pageSize: number
 }
 
@@ -38,7 +38,8 @@ interface PaginateProps {
 const RANGE = 1
 
 export default function Pagination(props: PaginateProps) {
-  const { page, setPage, pageSize } = props
+  const { queryConfig, pageSize } = props
+  const page = Number(queryConfig.page)
 
   const renderPagination = () => {
     let dotAfter = false
@@ -48,9 +49,9 @@ export default function Pagination(props: PaginateProps) {
       if (!dotBefore) {
         dotBefore = true
         return (
-          <button className='mx-2 cursor-pointer rounded border bg-white px-3 py-2  shadow-sm' key={index}>
+          <span className='mx-2 cursor-pointer rounded border bg-white px-3 py-2  shadow-sm' key={index}>
             ...
-          </button>
+          </span>
         )
       }
     }
@@ -59,9 +60,9 @@ export default function Pagination(props: PaginateProps) {
       if (!dotAfter) {
         dotAfter = true
         return (
-          <button className='mx-2 cursor-pointer rounded border bg-white px-3 py-2  shadow-sm' key={index}>
+          <span className='mx-2 cursor-pointer rounded border bg-white px-3 py-2  shadow-sm' key={index}>
             ...
-          </button>
+          </span>
         )
       }
     }
@@ -83,23 +84,29 @@ export default function Pagination(props: PaginateProps) {
         }
 
         return (
-          <button
+          <Link
+            to={{
+              pathname: path.home,
+              search: createSearchParams({
+                ...queryConfig,
+                page: pageNumber.toString()
+              }).toString()
+            }}
             key={index}
             className={classNames('mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm', {
               'border-cyan-500': pageNumber === page,
               'border-transparent': pageNumber !== page
             })}
-            onClick={() => setPage(pageNumber)}
           >
             {pageNumber}
-          </button>
+          </Link>
         )
       })
   }
 
   return (
     <div className='mt-6 flex flex-wrap justify-center'>
-      {/* {page === 1 ? (
+      {page === 1 ? (
         <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2  shadow-sm'>Prev</span>
       ) : (
         <Link
@@ -114,10 +121,10 @@ export default function Pagination(props: PaginateProps) {
         >
           Prev
         </Link>
-      )} */}
+      )}
 
       {renderPagination()}
-      {/* {page === pageSize ? (
+      {page === pageSize ? (
         <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2  shadow-sm'>Next</span>
       ) : (
         <Link
@@ -132,7 +139,7 @@ export default function Pagination(props: PaginateProps) {
         >
           Next
         </Link>
-      )} */}
+      )}
     </div>
   )
 }

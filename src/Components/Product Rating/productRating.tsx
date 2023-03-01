@@ -5,6 +5,7 @@ interface RatingProps {
 export default function ProductRating(props: RatingProps) {
   const { rating } = props
 
+  //* khi handle sẽ set width phù hợp với từng star
   const handleWidth = (order: number) => {
     if (order <= rating) {
       return '100%'
@@ -17,6 +18,7 @@ export default function ProductRating(props: RatingProps) {
 
   return (
     <div className='flex items-center'>
+      {/* render ra 5 object trong Array tự tạo */}
       {Array(5)
         .fill(0)
         .map((_, index) => (
