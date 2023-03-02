@@ -61,6 +61,7 @@ export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   }
 })
 
+//* function tái sử dụng để check confirm password
 const handleConfirmPasswordYup = (refString: string) => {
   return yup
     .string()
@@ -70,8 +71,18 @@ const handleConfirmPasswordYup = (refString: string) => {
     .oneOf([yup.ref(refString)], 'Nhập lại password không khớp')
 }
 
+//* function tái sử dụng để check price_max và price_min
+function testPriceMinMax(this: yup.TestContext<yup.AnyObject>) {
+  const { price_max, price_min } = this.parent as { price_min: string; price_max: string }
+  if (price_min !== '' && price_max !== '') {
+    return Number(price_max) >= Number(price_min)
+  }
+  return price_min !== '' || price_max !== ''
+}
+
 //* Check validate by yup
 export const schema = yup.object({
+  //* check validate login/register
   email: yup
     .string()
     .required('Email la bat buoc')
@@ -83,7 +94,19 @@ export const schema = yup.object({
     .required('Password la bat buoc')
     .max(160, 'Do dai tu 6 - 160 ky tu')
     .min(6, 'Do dai tu 6 - 160 ky tu'),
-  confirm_password: handleConfirmPasswordYup('password')
+  confirm_password: handleConfirmPasswordYup('password'),
+
+  //* check validate price (when user filter flow price)
+  price_min: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: testPriceMinMax
+  }),
+  price_max: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Giá không phù hợp',
+    test: testPriceMinMax
+  })
 })
 
 export type Schema = yup.InferType<typeof schema>

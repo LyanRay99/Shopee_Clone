@@ -7,8 +7,10 @@ const path = {
   login: '/login',
   register: '/register',
   logout: '/logout',
+  products: '/products',
   productDetail: ':nameId',
-  cart: '/cart'
+  cart: '/cart',
+  category: '/categories'
 } as const
 
 export default path
