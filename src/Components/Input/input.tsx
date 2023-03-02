@@ -15,14 +15,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function Input(props: InputProps) {
   const {
-    type,
     errorMessage,
     register,
     rules,
     classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm',
     classNameError = 'mt-1 text-red-600 min-h-[1.25rem] text-sm',
     classNameEye = 'absolute top-[8px] right-[5px] h-5 w-5 cursor-pointer',
-    placeholder,
     className,
     name,
     ...rest
@@ -33,12 +31,11 @@ export default function Input(props: InputProps) {
   return (
     <div className={classNameInput}>
       <input
-        type={type}
         className={className}
         // classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
-        placeholder={placeholder}
         autoComplete='on'
         {...registerResult}
+        {...rest}
       />
 
       <div className={classNameError}>{errorMessage}</div>

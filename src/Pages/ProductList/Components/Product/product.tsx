@@ -7,7 +7,7 @@ import { Product as ProductType } from 'src/@types/product.type'
 import { formatCurrency, formatNumberToSocialStyle } from 'src/Utils/formatCurrency'
 
 //* Components
-import ProductRating from 'src/Components/Product Rating'
+import ProductRating from 'src/Components/Product_Rating'
 
 interface ProductProps {
   product: ProductType
