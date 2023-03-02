@@ -3,6 +3,7 @@ import { Link, useNavigate, createSearchParams } from 'react-router-dom'
 import classNames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
 
 //* Utils
 import path from 'src/Constants/path'
@@ -12,6 +13,9 @@ import { QueryConfig } from '../../ProductList'
 import { Category } from 'src/@types/category.type'
 import { schema, Schema } from 'src/Utils/ruleForm'
 import { NoUndefinedField } from 'src/@types/utils.type'
+
+//* Components
+import RatingStars from '../RatingStar'
 
 interface AsideFilterProps {
   queryConfig: QueryConfig
@@ -37,6 +41,7 @@ export default function AsideFilter(props: AsideFilterProps) {
     control,
     handleSubmit,
     trigger,
+    reset,
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
@@ -47,10 +52,11 @@ export default function AsideFilter(props: AsideFilterProps) {
     shouldFocusError: false
   })
 
-  const nagigate = useNavigate()
+  const navigate = useNavigate()
 
+  //* filter by price range
   const onSubmit = handleSubmit((data) => {
-    nagigate({
+    navigate({
       pathname: path.home,
       search: createSearchParams({
         ...queryConfig,
@@ -60,11 +66,34 @@ export default function AsideFilter(props: AsideFilterProps) {
     })
   })
 
+  //* delete all filter property
+  const handleRemoveAll = () => {
+    //* điều hướng về lại page 1 và loại bỏ các filter property hiện có
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            page: '1'
+          },
+          ['price_min', 'price_max', 'category', 'rating_filter', 'order', 'sort_by']
+        )
+      ).toString()
+    })
+
+    // * reset lại price_max, price_min
+    reset({
+      price_max: '',
+      price_min: ''
+    })
+  }
+
   return (
     <div className='py-4'>
       {/* Completed: Show all products */}
-      <Link
-        to={path.home}
+      <button
+        onClick={handleRemoveAll}
         className={classNames('flex items-center font-bold', {
           'text-orange': !category
         })}
@@ -83,11 +112,11 @@ export default function AsideFilter(props: AsideFilterProps) {
           </g>
         </svg>
         {/* {t('aside filter.all categories')} */}
-      </Link>
+      </button>
 
       <div className='my-4 h-[1px] bg-gray-300' />
 
-      {/* Completed: Filter product flow category */}
+      {/* Completed: Filter product by category */}
       <ul>
         {categories.map((categoryItem) => {
           const isActive = category === categoryItem._id
@@ -140,7 +169,7 @@ export default function AsideFilter(props: AsideFilterProps) {
 
       <div className='my-4 h-[1px] bg-gray-300' />
 
-      {/* Completed: Filter flow price range */}
+      {/* Completed: Filter by price range */}
       <div className='my-5'>
         <div>Khoảng giá</div>
         <form className='mt-2' onSubmit={onSubmit}>
@@ -154,7 +183,7 @@ export default function AsideFilter(props: AsideFilterProps) {
                     type='text'
                     className='grow'
                     placeholder='₫ TỪ'
-                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm w-2/5'
+                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                     classNameError='hidden'
                     {...field}
                     onChange={(event) => {
@@ -189,7 +218,7 @@ export default function AsideFilter(props: AsideFilterProps) {
                     type='text'
                     className='grow'
                     placeholder='₫ ĐẾN'
-                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm w-2/5'
+                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                     classNameError='hidden'
                     {...field}
                     onChange={(event) => {
@@ -213,10 +242,10 @@ export default function AsideFilter(props: AsideFilterProps) {
 
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='text-sm'>Đánh giá</div>
-      {/* <RatingStars queryConfig={queryConfig} /> */}
+      <RatingStars queryConfig={queryConfig} />
       <div className='my-4 h-[1px] bg-gray-300' />
       <Button
-        // onClick={handleRemoveAll}
+        onClick={handleRemoveAll}
         className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'
       >
         Xóa tất cả

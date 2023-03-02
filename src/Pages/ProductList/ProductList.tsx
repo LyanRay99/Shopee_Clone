@@ -26,7 +26,7 @@ export default function ProductLists() {
     {
       //* set page = 1 để khi queryParams.page là underfined thì default là page 1
       page: queryParams.page || '1',
-      limit: queryParams.limit || '4',
+      limit: queryParams.limit || '6',
       order: queryParams.order,
       sort_by: queryParams.sort_by,
       category: queryParams.category,
@@ -87,7 +87,7 @@ export default function ProductLists() {
                 Data ít quá nên map 3 lần với limit = 10 để có nhiều page_size hơn.
                 Nếu để mặc định limit = 30 thì page chỉ được 2 thôi
                  */}
-                {productsData &&
+                {/* {productsData &&
                   productsData.data.data.products.map((product) => (
                     <div className='col-span-1' key={product._id}>
                       <Product product={product} />
@@ -98,7 +98,7 @@ export default function ProductLists() {
                     <div className='col-span-1' key={product._id}>
                       <Product product={product} />
                     </div>
-                  ))}
+                  ))} */}
                 {productsData &&
                   productsData.data.data.products.map((product) => (
                     <div className='col-span-1' key={product._id}>
