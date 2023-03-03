@@ -1,4 +1,5 @@
 //* Library
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
@@ -6,15 +7,17 @@ import React, { useRef } from 'react'
 
 //* Utils
 import { getProductDetail } from 'src/Api/product.api'
+import { getProduct } from 'src/Api/product.api'
 import { formatNumberToSocialStyle } from 'src/Utils/formatCurrency'
 import { formatCurrency } from 'src/Utils/formatCurrency'
 import { rateSale } from 'src/Utils/discount'
-import { Product } from 'src/@types/product.type'
+import { Product as ProductType } from 'src/@types/product.type'
 import { getIdFromNameId } from 'src/Utils/customUrl'
+import { ProductListConfig } from 'src/@types/product.type'
 
 //* Components
 import ProductRating from 'src/Components/Product_Rating'
-import { useEffect, useMemo, useState } from 'react'
+import Product from '../ProductList/Components/Product'
 
 export default function ProductDetail() {
   //* lấy nameId từ useParams
@@ -24,11 +27,28 @@ export default function ProductDetail() {
   //* Call API
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
-    queryFn: () => getProductDetail(id as string)
+    queryFn: () => getProductDetail(id as string),
+    keepPreviousData: true,
+    staleTime: 3 * 60 * 1000
   })
-
   //* tạo biến product để lấy data product mà server trả về
   const product = productDetailData?.data.data
+
+  //* đặt query để show ra product đề suất bên dưới product detail
+  const queryConfig = {
+    limit: '6',
+    page: '1',
+    category: product?.category._id
+  }
+
+  //* call API lấy các product liên quan để show bên dưới
+  const { data: productData } = useQuery({
+    queryKey: ['product', queryConfig],
+    queryFn: () => getProduct(queryConfig as ProductListConfig),
+    //* enabled: truyền vào nó product type boolean để check xem product có ko. Nếu có thì mới gọi API chỗ này (để show ra các product đề suất)
+    enabled: Boolean(product),
+    staleTime: 3 * 60 * 1000
+  })
 
   /*
    * lấy ra 5 image detail của product đẻ show slider
@@ -70,7 +90,7 @@ export default function ProductDetail() {
    * nếu index 1 của currentIndexImages là image cuối cùng thì nó sẽ ko thể next được nữa
    **/
   const next = () => {
-    if (currentIndexImages[1] < (product as Product).images.length) {
+    if (currentIndexImages[1] < (product as ProductType).images.length) {
       setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
     }
   }
@@ -289,15 +309,15 @@ export default function ProductDetail() {
       <div className='mt-8'>
         <div className='container'>
           <div className='uppercase text-gray-400'>CÓ THỂ BẠN CŨNG THÍCH</div>
-          {/* {productsData && (
+          {productData && (
             <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-              {productsData.data.data.products.map((product) => (
+              {productData.data.data.products.map((product) => (
                 <div className='col-span-1' key={product._id}>
                   <Product product={product} />
                 </div>
               ))}
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </div>
