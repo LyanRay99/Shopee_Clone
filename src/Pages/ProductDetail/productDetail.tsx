@@ -1,19 +1,19 @@
 //* Library
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import React, { useRef } from 'react'
+import { toast } from 'react-toastify'
 
 //* Utils
-import { getProductDetail } from 'src/Api/product.api'
-import { getProduct } from 'src/Api/product.api'
-import { formatNumberToSocialStyle } from 'src/Utils/formatCurrency'
-import { formatCurrency } from 'src/Utils/formatCurrency'
+import { getProductDetail, getProduct } from 'src/Api/product.api'
+import { formatNumberToSocialStyle, formatCurrency } from 'src/Utils/formatCurrency'
 import { rateSale } from 'src/Utils/discount'
-import { Product as ProductType } from 'src/@types/product.type'
+import { Product as ProductType, ProductListConfig } from 'src/@types/product.type'
 import { getIdFromNameId } from 'src/Utils/customUrl'
-import { ProductListConfig } from 'src/@types/product.type'
+import { addToCart } from 'src/Api/purchase.api'
+import { queryClient } from 'src/main'
+import { purchase_Status } from 'src/Constants/purchase'
 
 //* Components
 import ProductRating from 'src/Components/Product_Rating'
@@ -134,10 +134,24 @@ export default function ProductDetail() {
     imageRef.current?.removeAttribute('style')
   }
 
-  //*
+  //* set amount product when user increas/decrease/onchange input
   const [buyCount, setBuyCount] = useState(1)
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
+  }
+
+  //* handle add product into cart
+  const addToCartMutation = useMutation(addToCart)
+  const handleAddToCart = () => {
+    addToCartMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchase_Status.inCart }] })
+        }
+      }
+    )
   }
 
   //* check product is null? if product is null, it will return null
@@ -259,7 +273,7 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <button
-                  //   onClick={addToCart}
+                  onClick={handleAddToCart}
                   className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
                 >
                   <svg
