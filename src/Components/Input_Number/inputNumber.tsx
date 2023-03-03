@@ -3,14 +3,14 @@ import React, { InputHTMLAttributes, forwardRef } from 'react'
 //* Tạo input component để tái sử dụng trong form
 //* các property mà input nhận vào (được khai báo type trong interface)
 //* cứ pháp "extends InputHTMLAttributes<HTMLInputElement>" để kế thừa lại các thuộc tính sẵn có của tag input trong HTML
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
   classNameInput?: string
   classNameError?: string
   classNameEye?: string
 }
 
-const InputNumber = forwardRef<HTMLInputElement, InputProps>(function InputNumber(props: InputProps, ref) {
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumber(props: InputNumberProps, ref) {
   const { errorMessage, classNameInput, classNameError, className, onChange, ...rest } = props
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

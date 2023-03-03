@@ -18,6 +18,7 @@ import { ProductListConfig } from 'src/@types/product.type'
 //* Components
 import ProductRating from 'src/Components/Product_Rating'
 import Product from '../ProductList/Components/Product'
+import QuantityController from 'src/Components/Quantity_Controller'
 
 export default function ProductDetail() {
   //* lấy nameId từ useParams
@@ -133,6 +134,12 @@ export default function ProductDetail() {
     imageRef.current?.removeAttribute('style')
   }
 
+  //*
+  const [buyCount, setBuyCount] = useState(1)
+  const handleBuyCount = (value: number) => {
+    setBuyCount(value)
+  }
+
   //* check product is null? if product is null, it will return null
   if (!product) return null
   //* reverse will binding data
@@ -241,13 +248,13 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                {/* <QuantityController
+                <QuantityController
                   onDecrease={handleBuyCount}
                   onIncrease={handleBuyCount}
                   onType={handleBuyCount}
                   value={buyCount}
                   max={product.quantity}
-                /> */}
+                />
                 <div className='ml-6 text-sm text-gray-500'>{/* {product.quantity} {t('product:available')} */}</div>
               </div>
               <div className='mt-8 flex items-center'>
