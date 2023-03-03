@@ -2,7 +2,7 @@
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 
 //* Utils
 import { getProductDetail } from 'src/Api/product.api'
@@ -87,6 +87,36 @@ export default function ProductDetail() {
     }
   }
 
+  //* zoom image when user hover into it
+  const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    //* lấy các property của image hiện tại trong dom (ta đã dùng useRef để lưu giữ giá trị của nó)
+    const image = imageRef.current as HTMLImageElement
+
+    //* lấy size nguyên gốc của image ra
+    const { naturalWidth, naturalHeight } = image
+
+    //* lấy width và height của image
+    const rect = event.currentTarget.getBoundingClientRect()
+
+    const offsetX = event.pageX - (rect.x + window.scrollX)
+    const offsetY = event.pageY - (rect.y + window.scrollY)
+
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+
+    //* set size of image when user hover mouse
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+
+  //* Reset image when mouse leave
+  const handleRemoveZoom = () => {
+    imageRef.current?.removeAttribute('style')
+  }
+
   //* check product is null? if product is null, it will return null
   if (!product) return null
   //* reverse will binding data
@@ -109,8 +139,10 @@ export default function ProductDetail() {
             <div className='col-span-5'>
               <div
                 className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
-                // onMouseMove={handleZoom}
-                // onMouseLeave={handleRemoveZoom}
+                //* event move con trỏ trên element
+                onMouseMove={handleZoom}
+                //* event con trỏ rời khỏi element
+                onMouseLeave={handleRemoveZoom}
               >
                 <img
                   src={activeImage}
