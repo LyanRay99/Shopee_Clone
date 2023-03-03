@@ -18,7 +18,7 @@ export default function Product(props: ProductProps) {
 
   return (
     // <Link to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}>
-    <Link to={`/`}>
+    <Link to={`${path.home}${product._id}`}>
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
         <div className='relative w-full pt-[100%]'>
           <img
