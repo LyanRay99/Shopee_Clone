@@ -10,7 +10,7 @@ export const addToCart = (body: { product_id: string; buy_count: number }) => {
 
 //* Api get list product into cart of user
 export const getPurchaseList = (params: { status: PurchaseListStatus }) => {
-  return http.get<SuccessResponse<Purchase>>(path.purchase, {
+  return http.get<SuccessResponse<Purchase[]>>(path.purchase, {
     params
   })
 }
