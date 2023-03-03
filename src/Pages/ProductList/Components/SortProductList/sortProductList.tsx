@@ -5,7 +5,7 @@ import { omit } from 'lodash'
 
 //* Utils
 import path from 'src/Constants/path'
-import { QueryConfig } from '../../ProductList'
+import { QueryConfig } from 'src/Hooks/useQueryConfig'
 import { sortBy, order as orderConstants } from 'src/Constants/product'
 import { ProductListConfig } from 'src/@types/product.type'
 

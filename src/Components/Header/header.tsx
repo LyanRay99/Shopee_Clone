@@ -1,11 +1,47 @@
 //* Library
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, createSearchParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { omit } from 'lodash'
+
+//* Utils
+import useQueryConfig from 'src/Hooks/useQueryConfig'
+import path from 'src/Constants/path'
 
 //* Components
 import NavHeader from '../NavHeader'
 import Popover from '../Popover'
+import { Schema, schema } from 'src/Utils/ruleForm'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+type FormData = Pick<Schema, 'name'>
+
+const nameSchema = schema.pick(['name'])
 
 export default function Header() {
+  const queryConfig = useQueryConfig()
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(nameSchema)
+  })
+
+  const navigate = useNavigate()
+  const onSubmitSearch = handleSubmit((data) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by', 'price_max', 'price_min', 'rating_filter', 'category']
+        )
+      ).toString()
+    })
+  })
+
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
       <div className='container'>
@@ -18,13 +54,13 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='col-span-9'>
+          <form className='col-span-9' onSubmit={onSubmitSearch}>
             <div className='flex rounded-sm bg-white p-1'>
               <input
                 type='text'
                 className='flex-grow border-none bg-transparent px-3 py-2 text-black outline-none'
                 placeholder='Free Ship Đơn Từ 0Đ'
-                // {...register('name')}
+                {...register('name')}
               />
               <button className='flex-shrink-0 rounded-sm bg-orange py-2 px-6 hover:opacity-90'>
                 <svg
