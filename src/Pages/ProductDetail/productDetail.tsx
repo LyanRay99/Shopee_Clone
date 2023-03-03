@@ -10,15 +10,11 @@ import { formatNumberToSocialStyle } from 'src/Utils/formatCurrency'
 import { formatCurrency } from 'src/Utils/formatCurrency'
 import { rateSale } from 'src/Utils/discount'
 import { Product } from 'src/@types/product.type'
+import { getIdFromNameId } from 'src/Utils/customUrl'
 
 //* Components
 import ProductRating from 'src/Components/Product_Rating'
 import { useEffect, useMemo, useState } from 'react'
-
-export const getIdFromNameId = (nameId: string) => {
-  const arr = nameId.split('-i-')
-  return arr[arr.length - 1]
-}
 
 export default function ProductDetail() {
   //* lấy nameId từ useParams
