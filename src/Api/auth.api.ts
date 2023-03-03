@@ -1,6 +1,6 @@
 import { Auth } from './../@types/auth.type'
 import http from 'src/Utils/http'
-import path from 'path'
+import path from 'src/Constants/path'
 
 /**
  ** Do ta đã config Api bằng axios rồi nên ta sẽ tại các request tại đây
@@ -10,6 +10,6 @@ import path from 'path'
  ** Tương tự với các function sau
  */
 
-export const registerAccount = (body: { email: string; password: string }) => http.post<Auth>('/register', body)
-export const loginAccount = (body: { email: string; password: string }) => http.post<Auth>('/login', body)
-export const logoutAccount = () => http.post('/logout')
+export const registerAccount = (body: { email: string; password: string }) => http.post<Auth>(path.register, body)
+export const loginAccount = (body: { email: string; password: string }) => http.post<Auth>(path.login, body)
+export const logoutAccount = () => http.post(path.logout)

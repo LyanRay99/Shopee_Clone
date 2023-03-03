@@ -1,12 +1,11 @@
 //* Library
 import { useQuery } from '@tanstack/react-query'
-import { omitBy, isUndefined } from 'lodash'
 
 //* Utils
-import useQueryParams from 'src/Hooks/useQueryParams'
 import { getProduct } from 'src/Api/product.api'
 import { ProductListConfig } from 'src/@types/product.type'
 import { getCategory } from 'src/Api/category.api'
+import useQueryConfig from 'src/Hooks/useQueryConfig'
 
 //* Components
 import AsideFilter from './Components/AsideFilter'
@@ -14,30 +13,8 @@ import SortProductList from './Components/SortProductList'
 import Product from './Components/Product'
 import Pagination from 'src/Components/Paginate'
 
-//* Tạo type để lấy các type proprety của interface ProductListConfig
-export type QueryConfig = {
-  [key in keyof ProductListConfig]: string
-}
-
 export default function ProductLists() {
-  const queryParams: QueryConfig = useQueryParams()
-  //* Ta dùng omitBy của lodash loại bỏ các query underfined (với isUnderfined)
-  const queryConfig: QueryConfig = omitBy(
-    {
-      //* set page = 1 để khi queryParams.page là underfined thì default là page 1
-      page: queryParams.page || '1',
-      limit: queryParams.limit || '6',
-      order: queryParams.order,
-      sort_by: queryParams.sort_by,
-      category: queryParams.category,
-      exclude: queryParams.exclude,
-      rating_filter: queryParams.rating_filter,
-      price_max: queryParams.price_max,
-      price_min: queryParams.price_min,
-      name: queryParams.name
-    },
-    isUndefined
-  )
+  const queryConfig = useQueryConfig()
 
   /**
    ** Ta truyền queryParams vào để khi mà nó thay đổi thì useQuery mới nhận biết

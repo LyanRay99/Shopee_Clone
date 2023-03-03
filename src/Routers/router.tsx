@@ -19,6 +19,7 @@ import RegisterLayout from 'src/Layouts/Register_Layout'
 import MainLayout from 'src/Layouts/Main_layout'
 import ProductLists from '../Pages/ProductList'
 import Profile from 'src/Pages/Profile'
+import ProductDetail from 'src/Pages/ProductDetail'
 
 //* Function này dùng để ngăn chặn user vào trang chủ khi chưa login
 //* Nếu user đã login (tức isAuthenticated = true) thì sẽ được chuyển đến trang chủ (được đặt trong Outlet của React-router)
@@ -76,6 +77,15 @@ export default function useRouteElements() {
           )
         }
       ]
+    },
+    {
+      path: path.productDetail,
+      index: true,
+      element: (
+        <MainLayout>
+          <ProductDetail />
+        </MainLayout>
+      )
     },
     {
       path: path.home,
