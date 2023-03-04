@@ -136,6 +136,21 @@ export default function Cart() {
     deletePurchaseMutation.mutate(purchaseIDs)
   }
 
+  /*
+   * calculator total price of product
+   * những item đã checked sẽ được filter và gán vào checkedPurchases
+   * sau đó reduce để tính tổng của chúng (kết quả trước + (đơn giá sản phẩm * số lượng))
+   */
+  const totalCheckedPurchasePrice = checkedPurchases.reduce((result, current) => {
+    return result + current.product.price * current.buy_count
+  }, 0)
+
+  //* calculator total price saving
+  const totalCheckedPurchaseSaving = checkedPurchases.reduce((result, current) => {
+    console.log(result)
+    return result + (current.product.price_before_discount - current.product.price) * current.buy_count
+  }, 0)
+
   return (
     <div className='bg-neutral-100 py-16'>
       <div className='container'>
@@ -286,11 +301,11 @@ export default function Cart() {
                 <div>
                   <div className='flex items-center sm:justify-end'>
                     <div>Tổng thanh toán ({checkedPurchasesCount} sản phẩm):</div>
-                    {/* <div className='ml-2 text-2xl text-orange'>₫{formatCurrency(totalCheckedPurchasePrice)}</div> */}
+                    <div className='ml-2 text-2xl text-orange'>₫{formatCurrency(totalCheckedPurchasePrice)}</div>
                   </div>
                   <div className='flex items-center text-sm sm:justify-end'>
                     <div className='text-gray-500'>Tiết kiệm</div>
-                    {/* <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</div> */}
+                    <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSaving)}</div>
                   </div>
                 </div>
                 <Button
