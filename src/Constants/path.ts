@@ -2,6 +2,7 @@ const path = {
   home: '/',
   user: '/user',
   profile: '/user/profile',
+  uploadAvatar: '/user/upload-avatar',
   changePassword: '/user/password',
   historyPurchase: '/user/purchase',
   purchase: 'purchases',
