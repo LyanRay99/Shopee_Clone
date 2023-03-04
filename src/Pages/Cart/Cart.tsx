@@ -1,7 +1,7 @@
 //* Library
 import { Link, useLocation } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
 import { toast } from 'react-toastify'
@@ -131,7 +131,7 @@ export default function Cart() {
   }
 
   //* delete many items
-  const checkedPurchases = extendedPurchases.filter((purchase) => purchase.checked)
+  const checkedPurchases = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases])
   const checkedPurchasesCount = checkedPurchases.length
 
   const handleDeleteMany = () => {
@@ -144,15 +144,22 @@ export default function Cart() {
    * những item đã checked sẽ được filter và gán vào checkedPurchases
    * sau đó reduce để tính tổng của chúng (kết quả trước + (đơn giá sản phẩm * số lượng))
    */
-  const totalCheckedPurchasePrice = checkedPurchases.reduce((result, current) => {
-    return result + current.product.price * current.buy_count
-  }, 0)
+  const totalCheckedPurchasePrice = useMemo(
+    () =>
+      checkedPurchases.reduce((result, current) => {
+        return result + current.product.price * current.buy_count
+      }, 0),
+    [checkedPurchases]
+  )
 
   //* calculator total price saving
-  const totalCheckedPurchaseSaving = checkedPurchases.reduce((result, current) => {
-    console.log(result)
-    return result + (current.product.price_before_discount - current.product.price) * current.buy_count
-  }, 0)
+  const totalCheckedPurchaseSaving = useMemo(
+    () =>
+      checkedPurchases.reduce((result, current) => {
+        return result + (current.product.price_before_discount - current.product.price) * current.buy_count
+      }, 0),
+    [checkedPurchases]
+  )
 
   //* buy product in cart
   const buyProductMutation = useMutation({
