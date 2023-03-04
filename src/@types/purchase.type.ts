@@ -31,3 +31,13 @@ export interface Purchase {
   createAt: string
   updateAt: string
 }
+
+//* interface of working delete product into cart
+export interface DeletePurchase {
+  deleted_count: number
+}
+
+export interface ExtendedPurchases extends Purchase {
+  disabled: boolean
+  checked: boolean
+}

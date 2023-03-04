@@ -1,6 +1,6 @@
 //* Library
 import React, { useEffect, useMemo, useState, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { toast } from 'react-toastify'
@@ -14,6 +14,7 @@ import { getIdFromNameId } from 'src/Utils/customUrl'
 import { addToCart } from 'src/Api/purchase.api'
 import { queryClient } from 'src/main'
 import { purchase_Status } from 'src/Constants/purchase'
+import path from 'src/Constants/path'
 
 //* Components
 import ProductRating from 'src/Components/Product_Rating'
@@ -152,6 +153,20 @@ export default function ProductDetail() {
         }
       }
     )
+  }
+
+  //* handle buy product now
+  const navigate = useNavigate()
+
+  const handleBuyNow = async () => {
+    const response = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    const purchase = response.data.data
+
+    navigate(path.cart, {
+      state: {
+        purchaseID: purchase._id
+      }
+    })
   }
 
   //* check product is null? if product is null, it will return null
@@ -302,7 +317,7 @@ export default function ProductDetail() {
                   Thêm vào giỏ hàng
                 </button>
                 <button
-                  //   onClick={buyNow}
+                  onClick={handleBuyNow}
                   className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
                 >
                   Mua ngay

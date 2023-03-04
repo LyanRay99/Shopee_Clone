@@ -16,10 +16,12 @@ import path from 'src/Constants/path'
 import Login from '../Pages/Login'
 import Register from 'src/Pages/Register'
 import RegisterLayout from 'src/Layouts/Register_Layout'
-import MainLayout from 'src/Layouts/Main_layout'
+import MainLayout from 'src/Layouts/Main_Layout'
 import ProductLists from '../Pages/ProductList'
 import Profile from 'src/Pages/Profile'
 import ProductDetail from 'src/Pages/ProductDetail'
+import Cart from 'src/Pages/Cart'
+import CartLayout from 'src/Layouts/Cart_Layout'
 
 //* Function này dùng để ngăn chặn user vào trang chủ khi chưa login
 //* Nếu user đã login (tức isAuthenticated = true) thì sẽ được chuyển đến trang chủ (được đặt trong Outlet của React-router)
@@ -74,6 +76,14 @@ export default function useRouteElements() {
             <MainLayout>
               <Profile />
             </MainLayout>
+          )
+        },
+        {
+          path: path.cart,
+          element: (
+            <CartLayout>
+              <Cart />
+            </CartLayout>
           )
         }
       ]

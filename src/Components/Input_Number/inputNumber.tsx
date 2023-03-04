@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react'
+import React, { InputHTMLAttributes, forwardRef, useState } from 'react'
 
 //* Tạo input component để tái sử dụng trong form
 //* các property mà input nhận vào (được khai báo type trong interface)
@@ -11,7 +11,9 @@ export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> 
 }
 
 const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumber(props: InputNumberProps, ref) {
-  const { errorMessage, classNameInput, classNameError, className, onChange, ...rest } = props
+  const { errorMessage, classNameInput, classNameError, className, onChange, value = '', ...rest } = props
+
+  const [localValue, setLocalValue] = useState<string>(value as string)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -19,13 +21,19 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
       // Thực thi onChange callback từ bên ngoài truyền vào props
       onChange && onChange(event)
       // Cập nhật localValue state
-      // setLocalValue(value)
+      setLocalValue(value)
     }
   }
 
   return (
     <div className={classNameInput}>
-      <input className={`${className} w-full`} {...rest} ref={ref} onChange={handleChange} />
+      <input
+        className={`${className} w-full`}
+        onChange={handleChange}
+        value={value || localValue}
+        ref={ref}
+        {...rest}
+      />
 
       <div className={classNameError}>{errorMessage}</div>
     </div>
