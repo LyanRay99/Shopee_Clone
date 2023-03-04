@@ -1,10 +1,13 @@
 //* Library
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+//* Ultis
 import { AppContext } from 'src/Contexts/app.context'
 import path from 'src/Constants/path'
 import { logoutAccount } from 'src/Api/auth.api'
-import { useMutation } from '@tanstack/react-query'
+import { purchase_Status } from 'src/Constants/purchase'
 
 //* Components
 import Popover from '../Popover'
@@ -13,6 +16,8 @@ export default function NavHeader() {
   //* lấy isAuthenticated từ AppContext (check xem user đã đăng nhập chưa để show data bên dưới hoặc thưc hiện logout)
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
 
+  const queryClient = useQueryClient()
+
   const logoutMutation = useMutation({
     mutationFn: logoutAccount,
     //* Khi logout thành công sẽ set isAuthenticated = false để nhận biết user đã logout
@@ -20,7 +25,8 @@ export default function NavHeader() {
     onSuccess: (data) => {
       setIsAuthenticated(false)
       setProfile(null)
-      // queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+      //* xóa data cart khi logout
+      queryClient.removeQueries({ queryKey: ['purchases', { status: purchase_Status.inCart }] })
     },
     onError: (error) => {
       console.log(error)
