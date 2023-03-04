@@ -18,10 +18,13 @@ import Register from 'src/Pages/Register'
 import RegisterLayout from 'src/Layouts/Register_Layout'
 import MainLayout from 'src/Layouts/Main_Layout'
 import ProductLists from '../Pages/ProductList'
-import Profile from 'src/Pages/Profile'
+import Profile from 'src/Pages/User/Pages/Profile'
 import ProductDetail from 'src/Pages/ProductDetail'
 import Cart from 'src/Pages/Cart'
 import CartLayout from 'src/Layouts/Cart_Layout'
+import UserLayout from 'src/Layouts/User_Layout'
+import HistoryPurchase from 'src/Pages/User/Pages/HistoryPurchase'
+import ChangePassword from 'src/Pages/User/Pages/ChangePassword'
 
 //* Function này dùng để ngăn chặn user vào trang chủ khi chưa login
 //* Nếu user đã login (tức isAuthenticated = true) thì sẽ được chuyển đến trang chủ (được đặt trong Outlet của React-router)
@@ -71,20 +74,35 @@ export default function useRouteElements() {
       element: <ProtectedRoute />,
       children: [
         {
-          path: path.profile,
-          element: (
-            <MainLayout>
-              <Profile />
-            </MainLayout>
-          )
-        },
-        {
           path: path.cart,
           element: (
             <CartLayout>
               <Cart />
             </CartLayout>
           )
+        },
+        {
+          path: path.home,
+          element: (
+            <MainLayout>
+              <UserLayout />
+            </MainLayout>
+          ),
+          children: [
+            {
+              index: true,
+              path: path.profile,
+              element: <Profile />
+            },
+            {
+              path: path.changePassword,
+              element: <ChangePassword />
+            },
+            {
+              path: path.historyPurchase,
+              element: <HistoryPurchase />
+            }
+          ]
         }
       ]
     },
