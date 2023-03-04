@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 //* Utils
 import path from 'src/Constants/path'
-import { QueryConfig } from 'src/Pages/ProductList/ProductList'
+import { QueryConfig } from 'src/Hooks/useQueryConfig'
 
 interface PaginateProps {
   queryConfig: QueryConfig
