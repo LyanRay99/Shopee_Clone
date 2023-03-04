@@ -11,7 +11,7 @@ import Button from 'src/Components/Button'
 import path from 'src/Constants/path'
 import noproduct from '../../Assets/images/no-product.png'
 import { purchase_Status } from 'src/Constants/purchase'
-import { getPurchaseList, updatePurchase } from 'src/Api/purchase.api'
+import { getPurchaseList, updatePurchase, buyProducts, deletePurchase } from 'src/Api/purchase.api'
 import { Purchase } from 'src/@types/purchase.type'
 import { generateNameId } from 'src/Utils/customUrl'
 import { formatCurrency } from 'src/Utils/formatCurrency'
@@ -80,6 +80,7 @@ export default function Cart() {
     )
   }
 
+  //* update amount product in cart
   const updatePurchaseMutation = useMutation({
     mutationFn: updatePurchase,
     onSuccess: () => refetch() //* call lại Api khi lấy trước đó đã call Api thành công
@@ -106,6 +107,33 @@ export default function Cart() {
         draft[productIndex].buy_count = value
       })
     )
+  }
+
+  //* buy product in cart
+  const buyProductMutation = useMutation({
+    mutationFn: buyProducts,
+    onSuccess: () => refetch()
+  })
+
+  //* delete product in cart
+  const deletePurchaseMutation = useMutation({
+    onSuccess: () => refetch(),
+    mutationFn: deletePurchase
+  })
+
+  //* delete 1 item
+  const handleDelete = (purchaseIndex: number) => () => {
+    const purchaseID = extendedPurchases[purchaseIndex]._id
+    deletePurchaseMutation.mutate([purchaseID])
+  }
+
+  //* delete many items
+  const checkedPurchases = extendedPurchases.filter((purchase) => purchase.checked)
+  const checkedPurchasesCount = checkedPurchases.length
+
+  const handleDeleteMany = () => {
+    const purchaseIDs = checkedPurchases.map((purchase) => purchase._id)
+    deletePurchaseMutation.mutate(purchaseIDs)
   }
 
   return (
@@ -220,7 +248,7 @@ export default function Cart() {
                             </div>
                             <div className='col-span-1'>
                               <button
-                                // onClick={handleDelete(index)}
+                                onClick={handleDelete(index)}
                                 className='bg-none text-black transition-colors hover:text-orange'
                               >
                                 Xóa
@@ -246,18 +274,18 @@ export default function Cart() {
                     onChange={handleCheckAll}
                   />
                 </div>
-                {/* <button className='mx-3 border-none bg-none' onClick={handleCheckAll}>
+                <button className='mx-3 border-none bg-none' onClick={handleCheckAll}>
                   Chọn tất cả ({extendedPurchases.length})
                 </button>
-                <button className='mx-3 border-none bg-none' onClick={handleDeleteManyPurchases}>
+                <button className='mx-3 border-none bg-none' onClick={handleDeleteMany}>
                   Xóa
-                </button> */}
+                </button>
               </div>
 
               <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
                 <div>
                   <div className='flex items-center sm:justify-end'>
-                    {/* <div>Tổng thanh toán ({checkedPurchasesCount} sản phẩm):</div> */}
+                    <div>Tổng thanh toán ({checkedPurchasesCount} sản phẩm):</div>
                     {/* <div className='ml-2 text-2xl text-orange'>₫{formatCurrency(totalCheckedPurchasePrice)}</div> */}
                   </div>
                   <div className='flex items-center text-sm sm:justify-end'>
