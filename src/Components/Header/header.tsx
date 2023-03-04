@@ -14,43 +14,49 @@ import { getPurchaseList } from 'src/Api/purchase.api'
 import { formatCurrency } from 'src/Utils/formatCurrency'
 import noproduct from '../../Assets/images/no-product.png'
 import { AppContext } from 'src/Contexts/app.context'
+import useSearchProducts from 'src/Hooks/useSearchProducts'
 
 //* Components
 import NavHeader from '../NavHeader'
 import Popover from '../Popover'
 import { Schema, schema } from 'src/Utils/ruleForm'
 
-type FormData = Pick<Schema, 'name'>
+// type FormData = Pick<Schema, 'name'>
 
-const nameSchema = schema.pick(['name'])
+// const nameSchema = schema.pick(['name'])
 
 const MAX_PURCHASES = 5
 
 export default function Header() {
-  const queryConfig = useQueryConfig()
-  const { register, handleSubmit } = useForm<FormData>({
-    defaultValues: {
-      name: ''
-    },
-    resolver: yupResolver(nameSchema)
-  })
+  const { register, onSubmitSearch } = useSearchProducts()
+
+  /*
+  * Đoạn code này ko cần vì ta đã custom hook useSearchProducts để tái sử dụng
+  //   const queryConfig = useQueryConfig()
+  //   const { register, handleSubmit } = useForm<FormData>({
+  //     defaultValues: {
+  //       name: ''
+  //     },
+  //     resolver: yupResolver(nameSchema)
+  //   })
 
   //* search product by name
-  const navigate = useNavigate()
-  const onSubmitSearch = handleSubmit((data) => {
-    navigate({
-      pathname: path.home,
-      search: createSearchParams(
-        omit(
-          {
-            ...queryConfig,
-            name: data.name
-          },
-          ['order', 'sort_by', 'price_max', 'price_min', 'rating_filter', 'category']
-        )
-      ).toString()
-    })
-  })
+  // const navigate = useNavigate()
+  // const onSubmitSearch = handleSubmit((data) => {
+  //   navigate({
+  //     pathname: path.home,
+  //     search: createSearchParams(
+  //       omit(
+  //         {
+  //           ...queryConfig,
+  //           name: data.name
+  //         },
+  //         ['order', 'sort_by', 'price_max', 'price_min', 'rating_filter', 'category']
+  //       )
+  //     ).toString()
+  //   })
+  // })
+*/
 
   //* add product into cart
   const { isAuthenticated } = useContext(AppContext)
