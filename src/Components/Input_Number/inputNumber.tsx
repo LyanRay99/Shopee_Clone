@@ -21,7 +21,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
       // Thực thi onChange callback từ bên ngoài truyền vào props
       onChange && onChange(event)
       // Cập nhật localValue state
-      setLocalValue(value)
+      setLocalValue('')
     }
   }
 

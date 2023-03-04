@@ -1,7 +1,7 @@
 //* Library
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { toast } from 'react-toastify'
 
@@ -12,7 +12,7 @@ import { rateSale } from 'src/Utils/discount'
 import { Product as ProductType, ProductListConfig } from 'src/@types/product.type'
 import { getIdFromNameId } from 'src/Utils/customUrl'
 import { addToCart } from 'src/Api/purchase.api'
-import { queryClient } from 'src/main'
+// import { queryClient } from 'src/main'
 import { purchase_Status } from 'src/Constants/purchase'
 import path from 'src/Constants/path'
 
@@ -22,6 +22,8 @@ import Product from '../ProductList/Components/Product'
 import QuantityController from 'src/Components/Quantity_Controller'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
+  
   //* lấy nameId từ useParams
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
