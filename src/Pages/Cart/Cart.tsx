@@ -1,10 +1,11 @@
 //* Library
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
 import { toast } from 'react-toastify'
+import { useContext } from 'react'
 
 //* Utils
 import QuantityController from 'src/Components/Quantity_Controller'
@@ -16,15 +17,14 @@ import { getPurchaseList, updatePurchase, buyProducts, deletePurchase } from 'sr
 import { Purchase } from 'src/@types/purchase.type'
 import { generateNameId } from 'src/Utils/customUrl'
 import { formatCurrency } from 'src/Utils/formatCurrency'
-
-interface ExtendedPurchases extends Purchase {
-  disabled: boolean
-  checked: boolean
-}
+import { AppContext } from 'src/Contexts/app.context'
 
 export default function Cart() {
-  //* declare array of products in cart
-  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchases[]>([])
+  const location = useLocation()
+  const choosenPurchaseIDFromLocaltion = (location.state as { purchaseID: string } | null)?.purchaseID
+
+  //* get array of products in cart from Context Api
+  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
 
   //* call Api get data product list into cart
   //* refetch: dùng để call lại Api
@@ -41,15 +41,23 @@ export default function Cart() {
       const extendedPurchaseObject = keyBy(prev, '_id')
 
       return (
-        purchasesInCart?.map((purchase) => ({
-          ...purchase,
-          disabled: false,
-          checked: Boolean(extendedPurchaseObject[purchase._id]?.checked)
-        })) || []
+        purchasesInCart?.map((purchase) => {
+          const isChoosenPurchaseFromLocation = choosenPurchaseIDFromLocaltion === purchase._id
+          return {
+            ...purchase,
+            disabled: false,
+            checked: isChoosenPurchaseFromLocation || Boolean(extendedPurchaseObject[purchase._id]?.checked)
+          }
+        }) || []
       )
     })
-  }, [purchasesInCart])
+  }, [purchasesInCart, choosenPurchaseIDFromLocaltion])
 
+  useEffect(() => {
+    return () => {
+      history.replaceState(null, '')
+    }
+  }, [])
   //* dùng every method để check xem tất cả product trong cart có được check chưa (chỉ cần 1 product ko checked thì nó sẽ return false)
   const isAllChecked = extendedPurchases.every((purchase) => purchase.checked)
 

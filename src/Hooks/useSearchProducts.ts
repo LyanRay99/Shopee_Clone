@@ -42,3 +42,4 @@ export default function useSearchProducts() {
 
   return { register, onSubmitSearch }
 }
+

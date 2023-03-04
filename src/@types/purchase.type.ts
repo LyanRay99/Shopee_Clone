@@ -36,3 +36,8 @@ export interface Purchase {
 export interface DeletePurchase {
   deleted_count: number
 }
+
+export interface ExtendedPurchases extends Purchase {
+  disabled: boolean
+  checked: boolean
+}
