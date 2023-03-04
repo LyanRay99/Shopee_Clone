@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
+import { toast } from 'react-toastify'
 
 //* Utils
 import QuantityController from 'src/Components/Quantity_Controller'
@@ -109,12 +110,6 @@ export default function Cart() {
     )
   }
 
-  //* buy product in cart
-  const buyProductMutation = useMutation({
-    mutationFn: buyProducts,
-    onSuccess: () => refetch()
-  })
-
   //* delete product in cart
   const deletePurchaseMutation = useMutation({
     onSuccess: () => refetch(),
@@ -150,6 +145,28 @@ export default function Cart() {
     console.log(result)
     return result + (current.product.price_before_discount - current.product.price) * current.buy_count
   }, 0)
+
+  //* buy product in cart
+  const buyProductMutation = useMutation({
+    mutationFn: buyProducts,
+    onSuccess: (data) => {
+      refetch(), toast.success(data.data.message)
+    }
+  })
+
+  const handleBuyProduct = () => {
+    //* check xem có product vào checked ko, nếu có thì mới thực hiện logic buy product
+    if (checkedPurchases.length > 0) {
+      //* map để lấy các property id sản phẩm và số lượng mua
+      const body = checkedPurchases.map((purchase) => ({
+        product_id: purchase.product._id,
+        buy_count: purchase.buy_count
+      }))
+
+      //* call Api
+      buyProductMutation.mutate(body)
+    }
+  }
 
   return (
     <div className='bg-neutral-100 py-16'>
@@ -310,8 +327,10 @@ export default function Cart() {
                 </div>
                 <Button
                   className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-sm uppercase text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
-                  //   onClick={handleBuyPurchases}
-                  //   disabled={buyProductsMutation.isLoading}
+                  onClick={handleBuyProduct}
+                  //* khi user click hệ thống sẽ thực hiện logic mua hàng bao gồm cả call Api (nếu có product checked)
+                  //* lúc này buyProductMutation đang loading nên isLoading của nó sẽ = true (disabled ko cho user click nữa, tránh call api quá nhiều lần)
+                  disabled={buyProductMutation.isLoading}
                 >
                   Mua hàng
                 </Button>
