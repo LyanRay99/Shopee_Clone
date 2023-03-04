@@ -11,6 +11,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      //* ko call lại Api khi lần call trước error
       retry: 0
     }
   }
