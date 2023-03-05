@@ -1,11 +1,15 @@
+//* Library
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+//* Utils + Components
+import App from './App'
+import './index.css'
 import { AppProvider } from './Contexts/app.context'
+import ErrorBoundary from './Components/Error_Boundary'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +28,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         {/* React Context API */}
         <AppProvider>
-          <App />
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
         </AppProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

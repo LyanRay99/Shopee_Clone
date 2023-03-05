@@ -23,7 +23,7 @@ import QuantityController from 'src/Components/Quantity_Controller'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
-  
+
   //* lấy nameId từ useParams
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
