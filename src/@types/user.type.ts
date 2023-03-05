@@ -1,7 +1,9 @@
+type Role = 'User' | 'Admin'
+
 //* Interface của User
 export interface User {
   _id: string
-  roles: string[]
+  roles: Role[]
   email: string
   name?: string
   date_of_birth?: string //* ISO 8601

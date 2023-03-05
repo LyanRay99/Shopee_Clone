@@ -93,10 +93,7 @@ export default function Profile() {
       const res = await updateProfileMutation.mutateAsync({
         ...data,
         date_of_birth: data.date_of_birth?.toISOString(),
-        avatar: avatarName,
-        roles: [],
-        createdAt: '',
-        updatedAt: ''
+        avatar: avatarName
       })
 
       setProfile_ContextAPI(res.data.data)

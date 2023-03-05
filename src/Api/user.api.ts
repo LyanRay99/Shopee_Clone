@@ -2,14 +2,14 @@ import http from 'src/Utils/http'
 import path from 'src/Constants/path'
 import { SuccessResponse } from 'src/@types/utils.type'
 import { User } from 'src/@types/user.type'
-import { Omit } from 'lodash'
+// import { Omit } from 'lodash'
 
 /*
  * khai báo lại interface dùng cho updateUser
  * kế thừa lại interface User và dùng omit loại bỏ đi một số property
  * thêm mới 2 property (password, newPassword) vào
  */
-interface BodyUser extends Omit<User, '_id' | 'role' | 'email' | 'createAt' | 'updateAt'> {
+interface BodyUser extends Omit<User, '_id' | 'roles' | 'email' | 'createdAt' | 'updatedAt'> {
   password?: string
   newPassword?: string
 }

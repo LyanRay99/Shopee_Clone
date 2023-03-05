@@ -122,8 +122,16 @@ export const userSchema = yup.object({
   avatar: yup.string().max(1000, 'Độ dài tối đa là 1000 ký tự'),
   date_of_birth: yup.date().max(new Date(), 'Hãy chọn 1 ngày trong quá khứ'),
   //* kế thừa password từ schema ở trên
-  password: schema.fields['password'],
-  newPassword: schema.fields['password'],
+  password: yup
+    .string()
+    .required('Password la bat buoc')
+    .max(160, 'Do dai tu 6 - 160 ky tu')
+    .min(6, 'Do dai tu 6 - 160 ky tu'),
+  new_password: yup
+    .string()
+    .required('Password la bat buoc')
+    .max(160, 'Do dai tu 6 - 160 ky tu')
+    .min(6, 'Do dai tu 6 - 160 ky tu'),
   confirm_password: handleConfirmPasswordYup('confirm_password')
 })
 
