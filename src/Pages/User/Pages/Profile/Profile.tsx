@@ -2,26 +2,39 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useForm, Controller } from 'react-hook-form'
-import { useEffect } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
+import { toast } from 'react-toastify'
 
 //* Utils
-import { getProfile, updateProfile } from 'src/Api/user.api'
+import { getProfile, updateProfile, uploadAvatar } from 'src/Api/user.api'
 import { UserSchema, userSchema } from 'src/Utils/ruleForm'
+import { SetProfile } from 'src/Utils/auth'
+import { AppContext } from 'src/Contexts/app.context'
+import { getAvatarUrl } from 'src/Utils/customUrl'
+import { isAxiosError_UnprocessableEntity } from 'src/Utils/axiosError'
 
 //* Components
 import Button from 'src/Components/Button'
 import Input from 'src/Components/Input'
 import DateSelect from '../../Components/DateSelect'
+import InputFile from 'src/Components/Input_File'
+import UserInfo from '../../Components/UserInfo'
+import { ErrorResponse } from 'src/@types/utils.type'
 
 //* Type
-type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
+export type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
+type FormDataError = Omit<FormData, 'date_of_birth'> & {
+  date_of_birth?: string
+}
 
 //* schema dùng cho yup resolver
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
+  const { setProfile: setProfile_ContextAPI } = useContext(AppContext)
+
   //* Call Api get data of profile
-  const { data: profileData } = useQuery({
+  const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: () => getProfile()
   })
@@ -32,6 +45,8 @@ export default function Profile() {
     handleSubmit,
     setValue,
     control,
+    watch,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     //* khởi tại default value
@@ -58,40 +73,57 @@ export default function Profile() {
   }, [profile, setValue])
 
   const updateProfileMutation = useMutation(updateProfile)
+  const uploadAvatarMutation = useMutation(uploadAvatar)
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data)
+
     try {
-      // let avatarName = avatar
-      // if (file) {
-      //   const form = new FormData()
-      //   form.append('image', file)
-      //   const uploadRes = await uploadAvatarMutaion.mutateAsync(form)
-      //   avatarName = uploadRes.data.data
-      //   setValue('avatar', avatarName)
-      // }
-      // const res = await updateProfileMutation.mutateAsync({
-      //   ...data,
-      //   date_of_birth: data.date_of_birth?.toISOString(),
-      //   avatar: avatarName
-      // })
-      // setProfile(res.data.data)
-      // setProfileToLS(res.data.data)
-      // refetch()
-      // toast.success(res.data.message)
+      let avatarName = avatar
+      if (file) {
+        const form = new FormData()
+        form.append('image', file)
+        const uploadRes = await uploadAvatarMutation.mutateAsync(form)
+        avatarName = uploadRes.data.data
+        setValue('avatar', avatarName)
+      }
+
+      const res = await updateProfileMutation.mutateAsync({
+        ...data,
+        date_of_birth: data.date_of_birth?.toISOString(),
+        avatar: avatarName,
+        roles: [],
+        createdAt: '',
+        updatedAt: ''
+      })
+
+      setProfile_ContextAPI(res.data.data)
+      SetProfile(res.data.data)
+      refetch()
+      toast.success(res.data.message)
     } catch (error) {
-      // if (isAxiosUnprocessableEntityError<ErrorResponse<FormDataError>>(error)) {
-      //   const formError = error.response?.data.data
-      //   if (formError) {
-      //     Object.keys(formError).forEach((key) => {
-      //       setError(key as keyof FormDataError, {
-      //         message: formError[key as keyof FormDataError],
-      //         type: 'Server'
-      //       })
-      //     })
-      //   }
-      // }
+      if (isAxiosError_UnprocessableEntity<ErrorResponse<FormDataError>>(error)) {
+        const formError = error.response?.data.data
+        if (formError) {
+          Object.keys(formError).forEach((key) => {
+            setError(key as keyof FormDataError, {
+              message: formError[key as keyof FormDataError],
+              type: 'Server'
+            })
+          })
+        }
+      }
     }
   })
+
+  //* handle upload avatar
+  const [file, setFile] = useState<File>()
+  const previewImage = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file])
+  const avatar = watch('avatar')
+
+  const handleChangeFile = (file?: File) => {
+    setFile(file)
+  }
 
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
@@ -108,7 +140,7 @@ export default function Profile() {
               <div className='pt-3 text-gray-700'>{profile?.email}</div>
             </div>
           </div>
-          {/* <Info /> */}
+          <UserInfo />
           <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Địa chỉ</div>
             <div className='sm:w-[80%] sm:pl-5'>
@@ -121,6 +153,8 @@ export default function Profile() {
               />
             </div>
           </div>
+
+          {/* Completed: Handle date of birth */}
           <Controller
             control={control}
             name='date_of_birth'
@@ -144,12 +178,14 @@ export default function Profile() {
           <div className='flex flex-col items-center'>
             <div className='my-5 h-24 w-24'>
               <img
-                // src={previewImage || getAvatarUrl(avatar)}
+                src={previewImage || getAvatarUrl(avatar)}
                 alt=''
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            {/* <InputFile onChange={handleChangeFile} /> */}
+
+            {/* Completed: Upload avatar */}
+            <InputFile onChange={handleChangeFile} />
             <div className='mt-3 text-gray-400'>
               <div>Dụng lượng file tối đa 1 MB</div>
               <div>Định dạng:.JPEG, .PNG</div>

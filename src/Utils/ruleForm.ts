@@ -124,7 +124,7 @@ export const userSchema = yup.object({
   //* kế thừa password từ schema ở trên
   password: schema.fields['password'],
   newPassword: schema.fields['password'],
-  confirm_password: schema.fields['confirm_password']
+  confirm_password: handleConfirmPasswordYup('confirm_password')
 })
 
 export type UserSchema = yup.InferType<typeof userSchema>
