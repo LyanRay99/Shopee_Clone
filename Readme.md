@@ -1,50 +1,50 @@
-# Dự án Shopee Clone Typescript
+# Shopee Clone (React - Typescript)
 
-## Chức năng trong dự án
+## Feature of Project
 
-- Authentication module: Quản lý bằng JWT
+- Authentication module: Management by JWT
 
-  - Đăng ký
-  - Đăng nhập
-  - Đăng xuất
+  - Register
+  - Login
+  - Logout
 
-- Trang danh sách sản phẩm:
+- Product List Page:
 
-  - Có phân trang
-  - Sort (sắp xếp) theo từng thuộc tính sản phẩm
-  - filter nâng cao theo từng thuộc tính sản phẩm
-  - Tìm kiếm sản phẩm
+  - Pagination
+  - Sort by property of product
+  - filter by property of product
+  - Search product
 
-- Trang chi tiết sản phẩm:
+- Product Detail Page:
 
-  - Hiển thị thông tin chi tiết
-  - Ảnh hiển thị theo slider + hover zoom effect
-  - Mô tả thì hiển thị rich text dạng WYSIWYG HTML
-  - Có chức năng mua hàng
+  - Show detail info
+  - Image slider + hover zoom effect
+  - Decription show rich text type WYSIWYG HTML
+  - Feature Buy Product (Buy Now)
 
-- Giỏ hàng
+- Cart Page:
 
-  - Quản lý đơn hàng: Thêm, sửa, xóa sản phẩm
-  - Mua hàng
+  - Management purchase: CRUD Product
+  - Feature Buy Product
 
-- Quản lý Profile khách hàng
+- Management Customer Profile (User Page):
 
-  - Update thông tin cá nhân
+  - Update customer info
   - Upload Avatar
-  - Đổi mật khẩu
-  - Xem tình trạng đơn hàng
+  - Change password
+  - View status of purchase
 
-## Công nghệ sử dụng
+## Technolories're used in Project
 
 - UI / CSS Library: Tailwindcss + HeadlessUI [https://tailwindcss.com/] [https://headlessui.com/]
 - Animation UI: Floating UI [https://floating-ui.com/]
-- State Management: React Query cho async state [https://react-query-v3.tanstack.com/] và React Context cho state thường
+- State Management: React Query for async state [https://react-query-v3.tanstack.com/] and React Context for state normal
 - Form Management: React Hook Form [https://react-hook-form.com/] + Yup [https://github.com/jquense/yup]
 - Router: React Router Dom [https://reactrouter.com/en/main]
 - Build tool: Vite [https://vitejs.dev/]
-- API: Rest API dựa trên server mình cung cấp sẵn
-- Hỗ trợ đa ngôn ngữ với react.i18next
-- Hỗ trợ SEO với React Helmet
-- Mô hình hóa các component với story book
+- API: Rest API
+- Support multi language with react.i18next [https://www.i18next.com/]
+- Support SEO: React Helmet [https://github.com/nfl/react-helmet]
+- Modeling component with story book [https://storybook.js.org/]
 - Unit Test
-- Và các Package khác...
+- And others...
