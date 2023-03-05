@@ -8,6 +8,11 @@ export const SetAccessToken = (accessToken: string) => {
   localStorage.setItem('access_token', accessToken)
 }
 
+//* lưu refresh token vào localStorage
+export const SetRefreshToken = (refresh_token: string) => {
+  localStorage.setItem('refresh_token', refresh_token)
+}
+
 //* xóa access token và profile từ localStorage
 export const ClearData = () => {
   localStorage.removeItem('access_token')
@@ -20,6 +25,9 @@ export const ClearData = () => {
 
 //* lấy access token từ localStorage
 export const GetAccessToken = () => localStorage.getItem('access_token') || ''
+
+//* lấy refresh token from localStorage
+export const GetRefreshToken = () => localStorage.getItem('refresh_token') || ''
 
 //* lấy data profile từ localStorage
 export const GetProfile = () => {

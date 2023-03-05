@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { HttpStatusCode } from 'src/Constants/httpStatusCode'
+import { ErrorResponse } from 'src/@types/utils.type'
 
 //* Convert type of error => type nhất định
 export const isAxiosErrors = <T>(error: unknown): error is AxiosError<T> => {
@@ -15,4 +16,12 @@ export const isAxiosErrors = <T>(error: unknown): error is AxiosError<T> => {
  */
 export const isAxiosError_UnprocessableEntity = <FormError>(error: unknown): error is AxiosError<FormError> => {
   return isAxiosErrors(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
+}
+
+//* Error token expired
+export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return (
+    isAxiosError_UnprocessableEntity<ErrorResponse<{ name: string; message: string }>>(error) &&
+    error.response?.data?.data?.name === 'EXPIRED_TOKEN'
+  )
 }
