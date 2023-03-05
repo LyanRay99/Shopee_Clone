@@ -25,6 +25,7 @@ import CartLayout from 'src/Layouts/Cart_Layout'
 import UserLayout from 'src/Layouts/User_Layout'
 import HistoryPurchase from 'src/Pages/User/Pages/HistoryPurchase'
 import ChangePassword from 'src/Pages/User/Pages/ChangePassword'
+import NotFound from 'src/Pages/NotFound'
 
 //* Function này dùng để ngăn chặn user vào trang chủ khi chưa login
 //* Nếu user đã login (tức isAuthenticated = true) thì sẽ được chuyển đến trang chủ (được đặt trong Outlet của React-router)
@@ -121,6 +122,14 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <ProductLists />
+        </MainLayout>
+      )
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <NotFound />
         </MainLayout>
       )
     }
