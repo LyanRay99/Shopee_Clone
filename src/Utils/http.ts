@@ -1,11 +1,12 @@
 //* Library
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
-import { HttpStatusCode } from 'src/Constants/httpStatusCode'
 import { toast } from 'react-toastify'
+
+//* Utils
+import { HttpStatusCode } from 'src/Constants/httpStatusCode'
 import { Auth } from './../@types/auth.type'
 import { SetAccessToken, SetProfile } from './auth'
-import { ClearData } from './auth'
-import { GetAccessToken } from './auth'
+import { ClearData, GetAccessToken } from './auth'
 import path from 'src/Constants/path'
 
 //* Config Axios
@@ -41,6 +42,7 @@ class Http {
 
     //* add interceptors
     this.instance.interceptors.response.use(
+      //* thực hiện khi call api thành công
       (response: AxiosResponse) => {
         //* lấy url ra từ response.config
         const { url } = response.config
@@ -52,23 +54,27 @@ class Http {
           this.accessToken = data.data.access_token
           SetAccessToken(this.accessToken)
           SetProfile(data.data.user)
+
+          //* show notify
+          toast.success(response.data.message, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light'
+          })
         } else if (url === path.logout) {
           this.accessToken = ''
           ClearData()
         }
 
-        // toast.success(message, {
-        //   position: 'top-right',
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: 'light'
-        // })
         return Promise.resolve(response)
       },
+
+      //* thực hiện khi call api thất bại
       (error: AxiosError) => {
         // console.log(error.response?.status)
         if (error.response?.status === HttpStatusCode.UnprocessableEntity) {
@@ -85,6 +91,12 @@ class Http {
             progress: undefined,
             theme: 'light'
           })
+        }
+
+        //* delete data when error 401
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          //* delete data in localStorage
+          ClearData()
         }
         return Promise.reject(error)
       }

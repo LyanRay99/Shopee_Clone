@@ -1,3 +1,5 @@
+import userImages from '../Assets/images/user.svg'
+
 //* remove special character
 const removeSpecialCharacter = (str: string) =>
   // eslint-disable-next-line no-useless-escape
@@ -16,4 +18,9 @@ export const getIdFromNameId = (nameId: string) => {
  */
 export const generateNameId = ({ name, id }: { name: string; id: string }) => {
   return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i-${id}`
+}
+
+//* Get url avatar of user
+export const getAvatarUrl = (avatarName?: string) => {
+  return avatarName ? `https://api-ecom.duthanhduoc.com/images/${avatarName}` : userImages
 }

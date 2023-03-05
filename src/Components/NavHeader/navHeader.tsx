@@ -8,6 +8,7 @@ import { AppContext } from 'src/Contexts/app.context'
 import path from 'src/Constants/path'
 import { logoutAccount } from 'src/Api/auth.api'
 import { purchase_Status } from 'src/Constants/purchase'
+import { getAvatarUrl } from 'src/Utils/customUrl'
 
 //* Components
 import Popover from '../Popover'
@@ -104,7 +105,7 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            {/* <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' /> */}
+            <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
           <div>{profile?.email}</div>
         </Popover>

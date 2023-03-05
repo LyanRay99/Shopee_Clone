@@ -113,3 +113,26 @@ export const schema = yup.object({
 })
 
 export type Schema = yup.InferType<typeof schema>
+
+//* Tạo rule mới kế thừa từ 1 số property từ rule "schema"
+export const userSchema = yup.object({
+  name: yup.string().max(160, 'Độ dài tối đa là 160 ký tự'),
+  phone: yup.string().max(10, 'Độ dài tối đa là 10 ký tự'),
+  address: yup.string().max(160, 'Độ dài tối đa là 160 ký tự'),
+  avatar: yup.string().max(1000, 'Độ dài tối đa là 1000 ký tự'),
+  date_of_birth: yup.date().max(new Date(), 'Hãy chọn 1 ngày trong quá khứ'),
+  //* kế thừa password từ schema ở trên
+  password: yup
+    .string()
+    .required('Password la bat buoc')
+    .max(160, 'Do dai tu 6 - 160 ky tu')
+    .min(6, 'Do dai tu 6 - 160 ky tu'),
+  new_password: yup
+    .string()
+    .required('Password la bat buoc')
+    .max(160, 'Do dai tu 6 - 160 ky tu')
+    .min(6, 'Do dai tu 6 - 160 ky tu'),
+  confirm_password: handleConfirmPasswordYup('confirm_password')
+})
+
+export type UserSchema = yup.InferType<typeof userSchema>
