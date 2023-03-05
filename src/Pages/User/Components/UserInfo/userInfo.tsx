@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import Input from 'src/Components/Input'
 import InputNumber from 'src/Components/Input_Number'
 import { FormData as FormDataProfile } from '../../Pages/Profile/Profile'
+
 export default function UserInfo() {
   const {
     register,

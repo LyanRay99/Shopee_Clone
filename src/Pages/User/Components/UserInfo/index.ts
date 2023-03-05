@@ -1,3 +1,3 @@
-import UserInfo from './userInput'
+import UserInfo from './userInfo'
 
 export default UserInfo
