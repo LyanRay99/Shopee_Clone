@@ -10,7 +10,7 @@ import path from 'src/Constants/path'
 import { logoutAccount } from 'src/Api/auth.api'
 import { purchase_Status } from 'src/Constants/purchase'
 import { getAvatarUrl } from 'src/Utils/customUrl'
-import { locales } from 'src/i18Next/i18Next'
+import { locales } from 'src/i18n/i18Next'
 
 //* Components
 import Popover from '../Popover'

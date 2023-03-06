@@ -1,6 +1,6 @@
 //* Library
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
-import { toast } from 'react-toastify'
+import { toast, ToastPosition, Theme } from 'react-toastify'
 
 //* Utils
 import { HttpStatusCode } from 'src/Constants/httpStatusCode'
@@ -9,6 +9,27 @@ import { SetAccessToken, SetProfile, ClearData, GetAccessToken, GetRefreshToken,
 import path from 'src/Constants/path'
 import { ErrorResponse } from 'src/@types/utils.type'
 import { isAxiosError_UnprocessableEntity, isAxiosExpiredTokenError } from './axiosError'
+
+//* custom notify
+const customNotify: {
+  position: ToastPosition
+  autoClose: number
+  hideProgressBar: boolean
+  closeOnClick: boolean
+  pauseOnHover: boolean
+  draggable: boolean
+  progress: string | number | undefined
+  theme: Theme
+} = {
+  position: 'top-right',
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: 'light'
+}
 
 //* Config Axios
 class Http {
@@ -69,16 +90,7 @@ class Http {
           SetProfile(data.data.user)
 
           //* show notify
-          toast.success(response.data.message, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light'
-          })
+          toast.success(response.data.message, customNotify)
         } else if (url === path.logout) {
           this.accessToken = ''
           this.refreshToken = ''
@@ -97,16 +109,7 @@ class Http {
           const data: any | undefined = error.response?.data
           const message = data.data.password || error.message
           // console.log(error.response.data)
-          toast.error(message, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light'
-          })
+          toast.error(message, customNotify)
         }
 
         /*
