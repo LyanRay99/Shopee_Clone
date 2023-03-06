@@ -18,6 +18,13 @@ export const isAxiosError_UnprocessableEntity = <FormError>(error: unknown): err
   return isAxiosErrors(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
 }
 
+//* check error 401
+export function isAxiosError_UnauthorizedError<UnauthorizedError>(
+  error: unknown
+): error is AxiosError<UnauthorizedError> {
+  return isAxiosErrors(error) && error.response?.status === HttpStatusCode.Unauthorized
+}
+
 //* Error token expired
 export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
   return (
