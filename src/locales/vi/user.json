@@ -1,0 +1,36 @@
+{
+  "navProfile": {
+    "editProfile": "Sửa Hồ Sơ",
+    "myAccount": "Tài Khoản Của Tôi",
+    "changePassword": "Đổi Mật Khẩu",
+    "myPurchase": "Đơn Mua"
+  },
+  "profile": {
+    "myProfile": "Hồ Sơ Của Tôi",
+    "manage and protect your account": "Quản Lý Và Bảo Vệ Tài Khoản Của Bạn",
+    "username": "Tên Đăng Nhập",
+    "name": "Tên",
+    "email": "Email",
+    "phoneNumber": "Số Điện Thoại",
+    "address": " Địa chỉ",
+    "dateOfBirth": "Ngày Sinh",
+    "selectImage": "Lựa chọn ảnh",
+    "fileSize": "Dung lượng tối đa là 1MB",
+    "fileType": "Định dạng: .JPEG, .PNG"
+  },
+  "changePassword": {
+    "oldPassword": "Mật Khẩu Cũ",
+    "newPassword": "Mật Khẩu Mới",
+    "confirmPassword": "Xác Nhận Mật Khẩu",
+    "save": "Lưu"
+  },
+  "myPurchase": {
+    "all": "Tất Cả",
+    "toComfirm": "Chờ Xác Nhận",
+    "toShip": "Chờ Vận Chuyển",
+    "toReceive": "Chờ Nhận",
+    "completed": "Đã Nhận",
+    "cancelled": "Đã Hủy",
+    "totalPrice": "Tổng Giá Tiền"
+  }
+}

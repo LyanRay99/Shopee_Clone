@@ -1,5 +1,6 @@
 //* Library
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 //* Utils
 import path from 'src/Constants/path'
@@ -16,6 +17,9 @@ interface ProductProps {
 
 export default function Product(props: ProductProps) {
   const { product } = props
+
+  //* i18next
+  const { t } = useTranslation('product')
 
   return (
     <Link to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}>
@@ -45,7 +49,7 @@ export default function Product(props: ProductProps) {
             </bdo>
             <div className='ml-2 text-sm'>
               <span>{formatNumberToSocialStyle(product.sold)}</span>
-              <span className='ml-1'>Đã bán</span>
+              <span className='ml-1'>{t('detail.sold')}</span>
             </div>
           </div>
         </div>

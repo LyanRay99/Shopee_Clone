@@ -2,6 +2,7 @@
 import { Link, useNavigate, createSearchParams } from 'react-router-dom'
 import classNames from 'classnames'
 import { omit } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 //* Utils
 import path from 'src/Constants/path'
@@ -75,12 +76,15 @@ export default function SortProductList(props: SortProps) {
     })
   }
 
+  //* i18next
+  const { t } = useTranslation()
+
   return (
     <div className='bg-gray-300/40 py-4 px-3'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         {/* Completed: Sort product */}
         <div className='flex flex-wrap items-center gap-2'>
-          <div>Sắp xếp theo</div>
+          <div>{t('sortProductList.sortBy')}</div>
           <button
             className={classNames('h-8 px-4 text-center text-sm capitalize ', {
               'bg-orange text-white hover:bg-orange/80': isActiveSortBy(sortBy.view),
@@ -88,7 +92,7 @@ export default function SortProductList(props: SortProps) {
             })}
             onClick={() => handleSort(sortBy.view)}
           >
-            Phổ biến
+            {t('sortProductList.popular')}
           </button>
           <button
             className={classNames('h-8 px-4 text-center text-sm capitalize ', {
@@ -97,7 +101,7 @@ export default function SortProductList(props: SortProps) {
             })}
             onClick={() => handleSort(sortBy.createdAt)}
           >
-            Mới nhất
+            {t('sortProductList.latest')}
           </button>
           <button
             className={classNames('h-8 px-4 text-center text-sm capitalize ', {
@@ -106,7 +110,7 @@ export default function SortProductList(props: SortProps) {
             })}
             onClick={() => handleSort(sortBy.sold)}
           >
-            Bán chạy
+            {t('sortProductList.topSales')}
           </button>
           <select
             className={classNames('h-8  px-4 text-left text-sm capitalize  outline-none ', {
@@ -117,13 +121,13 @@ export default function SortProductList(props: SortProps) {
             onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
           >
             <option value='' disabled className='bg-white text-black'>
-              Giá
+              {t('sortProductList.price')}
             </option>
             <option value={orderConstants.asc} className='bg-white text-black'>
-              Giá: Thấp đến cao
+              {t('sortProductList.low to high')}
             </option>
             <option value={orderConstants.desc} className='bg-white text-black'>
-              Giá: Cao đến thấp
+              {t('sortProductList.high to low')}
             </option>
           </select>
         </div>

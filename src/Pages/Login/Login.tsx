@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { omit } from 'lodash'
 import { useContext } from 'react'
 import { AppContext } from 'src/Contexts/app.context'
+import { useTranslation } from 'react-i18next'
 
 //* Utils
 import { schema, Schema } from 'src/Utils/ruleForm'
@@ -87,15 +87,18 @@ export default function Login() {
     })
   })
 
+  //* i18next
+  const { t } = useTranslation()
+
   return (
     <div className='bg-orange'>
-      <title>Đăng nhập | Shopee Clone</title>
+      {/* <title>Đăng nhập | Shopee Clone</title> */}
 
       <div className='container'>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' noValidate onSubmit={onSubmit}>
-              <div className='text-2xl'>Đăng nhập</div>
+              <div className='text-2xl'>{t('authen.login')}</div>
               <Input
                 name='email'
                 type='email'
@@ -121,13 +124,13 @@ export default function Login() {
                   isLoading={loginAccountMutation.isLoading}
                   disabled={loginAccountMutation.isLoading}
                 >
-                  Đăng nhập
+                  {t('authen.login')}
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
-                <span className='text-gray-400'>Bạn chưa có tài khoản?</span>
+                <span className='text-gray-400'>{t('authen.You are not have account')}</span>
                 <Link className='ml-1 text-red-400' to={path.register}>
-                  Đăng ký
+                  {t('authen.register')}
                 </Link>
               </div>
             </form>

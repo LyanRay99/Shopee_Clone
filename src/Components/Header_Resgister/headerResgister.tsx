@@ -1,11 +1,16 @@
 import { Link, useMatch } from 'react-router-dom'
 import path from 'src/Constants/path'
+import { useTranslation } from 'react-i18next'
 
 export default function RegisterHeader() {
   //* dùng useMatch kết nối đến url
   const registerMatch = useMatch(path.register)
+
   //* Check xem url có đang là "/register" không. Nếu có thì show 'Đăng Ký' ngược lại thì show 'Đăng Nhập'
   const isRegister = Boolean(registerMatch)
+
+  //* i18next
+  const { t } = useTranslation()
 
   return (
     <header className='bg-white py-5'>
@@ -18,7 +23,9 @@ export default function RegisterHeader() {
               </g>
             </svg>
           </Link>
-          <div className='ml-5 text-xl text-black lg:text-2xl'>{isRegister ? 'Đăng Ký' : 'Đăng Nhập'}</div>
+          <div className='ml-5 text-xl text-black lg:text-2xl'>
+            {isRegister ? t('authen.register') : t('authen.login')}
+          </div>
         </nav>
       </div>
     </header>

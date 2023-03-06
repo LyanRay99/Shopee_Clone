@@ -13,34 +13,34 @@ import { AppContext } from 'src/Contexts/app.context'
 import path from 'src/Constants/path'
 
 //* Components
-// import Login from '../Pages/Login'
-// import Register from 'src/Pages/Register'
-// import RegisterLayout from 'src/Layouts/Register_Layout'
-// import MainLayout from 'src/Layouts/Main_Layout'
-// import ProductLists from '../Pages/ProductList'
-// import Profile from 'src/Pages/User/Pages/Profile'
-// import ProductDetail from 'src/Pages/ProductDetail'
-// import Cart from 'src/Pages/Cart'
-// import CartLayout from 'src/Layouts/Cart_Layout'
-// import UserLayout from 'src/Layouts/User_Layout'
-// import HistoryPurchase from 'src/Pages/User/Pages/HistoryPurchase'
-// import ChangePassword from 'src/Pages/User/Pages/ChangePassword'
-// import NotFound from 'src/Pages/NotFound'
+import Login from '../Pages/Login'
+import Register from 'src/Pages/Register'
+import RegisterLayout from 'src/Layouts/Register_Layout'
+import MainLayout from 'src/Layouts/Main_Layout'
+import ProductLists from '../Pages/ProductList'
+import Profile from 'src/Pages/User/Pages/Profile'
+import ProductDetail from 'src/Pages/ProductDetail'
+import Cart from 'src/Pages/Cart'
+import CartLayout from 'src/Layouts/Cart_Layout'
+import UserLayout from 'src/Layouts/User_Layout'
+import HistoryPurchase from 'src/Pages/User/Pages/HistoryPurchase'
+import ChangePassword from 'src/Pages/User/Pages/ChangePassword'
+import NotFound from 'src/Pages/NotFound'
 
 //* Lazy loading
-const Login = lazy(() => import('../Pages/Login'))
-const Register = lazy(() => import('../Pages/Register'))
-const ProductLists = lazy(() => import('../Pages/ProductList'))
-const ProductDetail = lazy(() => import('../Pages/ProductDetail'))
-const Cart = lazy(() => import('../Pages/Cart'))
-const Profile = lazy(() => import('../Pages/User/Pages/Profile'))
-const HistoryPurchase = lazy(() => import('../Pages/User/Pages/HistoryPurchase'))
-const ChangePassword = lazy(() => import('../Pages/User/Pages/ChangePassword'))
-const NotFound = lazy(() => import('../Pages/NotFound'))
-const RegisterLayout = lazy(() => import('../Layouts/Register_Layout'))
-const MainLayout = lazy(() => import('../Layouts/Main_Layout'))
-const CartLayout = lazy(() => import('../Layouts/Cart_Layout'))
-const UserLayout = lazy(() => import('../Layouts/User_Layout'))
+// const Login = lazy(() => import('../Pages/Login'))
+// const Register = lazy(() => import('../Pages/Register'))
+// const ProductLists = lazy(() => import('../Pages/ProductList'))
+// const ProductDetail = lazy(() => import('../Pages/ProductDetail'))
+// const Cart = lazy(() => import('../Pages/Cart'))
+// const Profile = lazy(() => import('../Pages/User/Pages/Profile'))
+// const HistoryPurchase = lazy(() => import('../Pages/User/Pages/HistoryPurchase'))
+// const ChangePassword = lazy(() => import('../Pages/User/Pages/ChangePassword'))
+// const NotFound = lazy(() => import('../Pages/NotFound'))
+// const RegisterLayout = lazy(() => import('../Layouts/Register_Layout'))
+// const MainLayout = lazy(() => import('../Layouts/Main_Layout'))
+// const CartLayout = lazy(() => import('../Layouts/Cart_Layout'))
+// const UserLayout = lazy(() => import('../Layouts/User_Layout'))
 
 //* Function này dùng để ngăn chặn user vào trang chủ khi chưa login
 //* Nếu user đã login (tức isAuthenticated = true) thì sẽ được chuyển đến trang chủ (được đặt trong Outlet của React-router)
