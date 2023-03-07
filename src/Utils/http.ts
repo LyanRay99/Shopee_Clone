@@ -8,11 +8,7 @@ import { Auth, RefreshTokenReponse } from './../@types/auth.type'
 import { SetAccessToken, SetProfile, ClearData, GetAccessToken, GetRefreshToken, SetRefreshToken } from './auth'
 import path from 'src/Constants/path'
 import { ErrorResponse } from 'src/@types/utils.type'
-import {
-  isAxiosError_UnprocessableEntity,
-  isAxiosExpiredTokenError,
-  isAxiosError_UnauthorizedError
-} from './axiosError'
+import { isAxiosExpiredTokenError, isAxiosError_UnauthorizedError } from './axiosError'
 
 //* custom notify
 const customNotify: {
@@ -53,7 +49,7 @@ class Http {
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json', //* dùng headers/Content-Type này vì ta đang dùng kiểu json để trả về server)
-        'expire-access-token': 10,
+        'expire-access-token': 60 * 60,
         'expire-refresh-token': 60 * 60 * 999
       }
     })

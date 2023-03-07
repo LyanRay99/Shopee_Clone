@@ -1,5 +1,6 @@
 //* Library
 import { useQuery } from '@tanstack/react-query'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import { getProduct } from 'src/Api/product.api'
@@ -44,10 +45,10 @@ export default function ProductLists() {
 
   return (
     <div className='bg-gray-200 py-6'>
-      {/* <Helmet>
+      <Helmet>
         <title>Trang chủ | Shopee Clone</title>
         <meta name='description' content='Trang chủ dự án Shopee Clone' />
-      </Helmet> */}
+      </Helmet>
       <div className='container'>
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>

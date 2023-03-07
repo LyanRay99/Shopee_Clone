@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { omit } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import Input from 'src/Components/Input'
@@ -52,7 +53,6 @@ export default function ChangePassword() {
             })
           })
         }
-        // }
       }
     }
   })
@@ -62,6 +62,11 @@ export default function ChangePassword() {
 
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
+      <Helmet>
+        <title>Đơn Mua | Shopee Clone</title>
+        <meta name='description' content='Đơn mua của bạn' />
+      </Helmet>
+
       <div className='border-b border-b-gray-200 py-6'>
         <h1 className='text-lg font-medium capitalize text-gray-900'>{t('navProfile.changePassword')}</h1>
         <div className='mt-1 text-sm text-gray-700'>{t('profile.manage and protect your account')}</div>
@@ -119,7 +124,7 @@ export default function ChangePassword() {
                 className='flex h-9 items-center rounded-sm bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
                 type='submit'
               >
-                {t('profile.save')}
+                {t('changePassword.save')}
               </Button>
             </div>
           </div>

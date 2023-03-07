@@ -1,9 +1,9 @@
 //* Library
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router-dom'
 import classNames from 'classnames'
 import { useQuery } from '@tanstack/react-query'
-import { createSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import { formatCurrency } from 'src/Utils/formatCurrency'
@@ -59,6 +59,11 @@ export default function HistoryPurchase() {
   return (
     <div>
       <div className='overflow-x-auto'>
+        <Helmet>
+          <title>Lịch Sử Mua Hàng | Shopee Clone</title>
+          <meta name='description' content='Lịch sử mua hàng của bạn' />
+        </Helmet>
+
         <div className='min-w-[700px]'>
           <div className='sticky top-0 flex rounded-t-sm shadow-sm'>{purchaseTabsLink}</div>
           <div>

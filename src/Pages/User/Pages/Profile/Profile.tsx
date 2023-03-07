@@ -5,6 +5,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form'
 import React, { useEffect, useMemo, useState, useContext } from 'react'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import { getProfile, updateProfile, uploadAvatar } from 'src/Api/user.api'
@@ -130,6 +131,11 @@ export default function Profile() {
 
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
+      <Helmet>
+        <title>Hồ Sơ | Shopee Clone</title>
+        <meta name='description' content='Hồ sơ của bạn' />
+      </Helmet>
+
       <div className='border-b border-b-gray-200 py-6'>
         <h1 className='text-lg font-medium capitalize text-gray-900'>{t('profile.myProfile')}</h1>
         <div className='mt-1 text-sm text-gray-700'>{t('profile.manage and protect your account')}</div>
