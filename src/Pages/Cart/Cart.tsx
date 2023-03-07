@@ -1,12 +1,12 @@
 //* Library
 import { Link, useLocation } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useState, useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useContext } from 'react'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
 import { toast } from 'react-toastify'
-import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import QuantityController from 'src/Components/Quantity_Controller'
@@ -189,6 +189,11 @@ export default function Cart() {
 
   return (
     <div className='bg-neutral-100 py-16'>
+      <Helmet>
+        <title>Giỏ Hàng | Shopee Clone</title>
+        <meta name='description' content='Giỏ hàng của bạn' />
+      </Helmet>
+
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <>

@@ -7,6 +7,7 @@ import { omit } from 'lodash'
 import { useContext } from 'react'
 import { AppContext } from 'src/Contexts/app.context'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import { schema, Schema } from 'src/Utils/ruleForm'
@@ -92,7 +93,10 @@ export default function Register() {
 
   return (
     <div className='bg-orange'>
-      {/* <title>Đăng ký | Shopee Clone</title> */}
+      <Helmet>
+        <title>Đăng ký | Shopee Clone</title>
+        <meta name='description' content='Đăng ký tài khoản vào dự án Shopee Clone' />
+      </Helmet>
 
       <div className='container'>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>

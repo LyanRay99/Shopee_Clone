@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 //* Utils
 import { getProductDetail, getProduct } from 'src/Api/product.api'
@@ -179,17 +180,11 @@ export default function ProductDetail() {
   //* reverse will binding data
   return (
     <div className='bg-gray-200 py-6'>
-      {/* <Helmet>
+      <Helmet>
         <title>{product.name} | Shopee Clone</title>
-        <meta
-          name='description'
-          content={convert(product.description, {
-            limits: {
-              maxInputLength: 150
-            }
-          })}
-        />
-      </Helmet> */}
+        <meta name='description' content={product.name} />
+      </Helmet>
+
       <div className='container'>
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>

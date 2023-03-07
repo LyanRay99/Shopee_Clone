@@ -44,7 +44,7 @@
 - Build tool: Vite [https://vitejs.dev/]
 - API: Rest API
 - Support multi language with react.i18next [https://www.i18next.com/]
-- Support SEO: React Helmet [https://github.com/nfl/react-helmet]
+- Support SEO: React Helmet Async [https://www.npmjs.com/package/react-helmet-async]
 - Modeling component with story book [https://storybook.js.org/]
 - Unit Test
 - And others...
