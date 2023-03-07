@@ -24,7 +24,7 @@ export default function Product(props: ProductProps) {
   return (
     <Link to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}>
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
-        <div className='relative w-full pt-[100%]'>
+        <div className='relative h-3/4 w-full pt-[100%]'>
           <img
             src={product.image}
             alt={product.name}
@@ -32,7 +32,16 @@ export default function Product(props: ProductProps) {
           />
         </div>
         <div className='overflow-hidden p-2'>
-          <div className='line-clamp-2 min-h-[2rem] text-xs'>{product.name}</div>
+          <div
+            className='line-clamp-2 max-h-[2rem] min-h-[2rem] overflow-hidden text-xs'
+            style={{
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical'
+            }}
+          >
+            {product.name}
+          </div>
           <div className='mt-3 flex items-center'>
             <div className='max-w-[50%] truncate text-gray-500 line-through'>
               <span className='text-xs'>₫</span>
