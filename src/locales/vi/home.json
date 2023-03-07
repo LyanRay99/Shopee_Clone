@@ -1,0 +1,40 @@
+{
+  "authen": {
+    "login": "Đăng Nhập",
+    "register": "Đăng Ký",
+    "logout": "Đăng xuất",
+    "You are not have account": "Bạn không có tài khoản?",
+    "You are have account": "Bạn đã có tài khoản?"
+  },
+  "aside filter": {
+    "all categories": "Tất cả danh mục",
+    "search filter": "Bộ lọc tìm kiếm",
+    "price range": "Khoảng giá",
+    "price range from": "₫ TỪ",
+    "price range to": "₫ ĐẾN",
+    "apply": "ÁP DỤNG",
+    "review": "Đánh giá",
+    "& Up": "trở lên",
+    "clear all": "XÓA TẤT CẢ"
+  },
+  "navHeader": {
+    "my purchase": "Đơn mua",
+    "my profile": "Tài khoản của tôi"
+  },
+  "header": {
+    "inputSearch": "Free Ship Đơn Từ 0đ",
+    "NoProducts": "Chưa có sản phẩm",
+    "recently added products": "Sản phẩm mới thêm",
+    "viewCart": "Xem Giỏ hàng",
+    "more products in cart": "sản phẩm khác trong giỏ hàng"
+  },
+  "sortProductList": {
+    "sortBy": "Sắp xếp theo",
+    "popular": "Phổ biến",
+    "latest": "Mới nhất",
+    "topSales": "Bán chạy",
+    "price": "Giá",
+    "low to high": "Giá: Thấp đến Cao",
+    "high to low": "Giá: Cao đến Thấp"
+  }
+}

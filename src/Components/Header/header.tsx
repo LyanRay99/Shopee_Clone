@@ -5,6 +5,7 @@ import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 
 //* Utils
 import useQueryConfig from 'src/Hooks/useQueryConfig'
@@ -69,6 +70,9 @@ export default function Header() {
 
   const purchasesInCart = dataCart?.data.data
 
+  //* i18next
+  const { t } = useTranslation()
+
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
       <div className='container'>
@@ -92,7 +96,7 @@ export default function Header() {
               <input
                 type='text'
                 className='flex-grow border-none bg-transparent px-3 py-2 text-black outline-none'
-                placeholder='Free Ship Đơn Từ 0Đ'
+                placeholder={t('header.inputSearch')}
                 {...register('name')}
               />
               <button className='flex-shrink-0 rounded-sm bg-orange py-2 px-6 hover:opacity-90'>
@@ -121,7 +125,7 @@ export default function Header() {
                 <div className='relative  max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
                   {purchasesInCart && purchasesInCart.length > 0 ? (
                     <div className='p-2'>
-                      <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                      <div className='capitalize text-gray-400'>{t('header.recently added products')}</div>
                       <div className='mt-5'>
                         {purchasesInCart.slice(0, MAX_PURCHASES).map((purchase) => (
                           <div className='mt-2 flex py-2 hover:bg-gray-100' key={purchase._id}>
@@ -144,21 +148,21 @@ export default function Header() {
                       <div className='mt-6 flex items-center justify-between'>
                         <div className='text-xs capitalize text-gray-500'>
                           {purchasesInCart.length > MAX_PURCHASES
-                            ? `Còn ${purchasesInCart.length - MAX_PURCHASES} sản phẩm khác trong giỏ hàng`
-                            : 'Thêm hàng vào giỏ'}
+                            ? `${purchasesInCart.length - MAX_PURCHASES} ${t('header.more products in cart')}`
+                            : ''}
                         </div>
                         <Link
                           to={path.cart}
                           className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
                         >
-                          Xem giỏ hàng
+                          {t('header.viewCart')}
                         </Link>
                       </div>
                     </div>
                   ) : (
                     <div className='flex h-[300px] w-[300px] flex-col items-center justify-center p-2'>
                       <img src={noproduct} alt='no purchase' className='h-24 w-24' />
-                      <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
+                      <div className='mt-3 capitalize'>{t('header.NoProducts')}</div>
                     </div>
                   )}
                 </div>

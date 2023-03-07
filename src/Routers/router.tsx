@@ -6,7 +6,7 @@
 
 //* Library
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, lazy, Suspense } from 'react'
 import { AppContext } from 'src/Contexts/app.context'
 
 //* Utils
@@ -25,6 +25,22 @@ import CartLayout from 'src/Layouts/Cart_Layout'
 import UserLayout from 'src/Layouts/User_Layout'
 import HistoryPurchase from 'src/Pages/User/Pages/HistoryPurchase'
 import ChangePassword from 'src/Pages/User/Pages/ChangePassword'
+import NotFound from 'src/Pages/NotFound'
+
+//* Lazy loading
+// const Login = lazy(() => import('../Pages/Login'))
+// const Register = lazy(() => import('../Pages/Register'))
+// const ProductLists = lazy(() => import('../Pages/ProductList'))
+// const ProductDetail = lazy(() => import('../Pages/ProductDetail'))
+// const Cart = lazy(() => import('../Pages/Cart'))
+// const Profile = lazy(() => import('../Pages/User/Pages/Profile'))
+// const HistoryPurchase = lazy(() => import('../Pages/User/Pages/HistoryPurchase'))
+// const ChangePassword = lazy(() => import('../Pages/User/Pages/ChangePassword'))
+// const NotFound = lazy(() => import('../Pages/NotFound'))
+// const RegisterLayout = lazy(() => import('../Layouts/Register_Layout'))
+// const MainLayout = lazy(() => import('../Layouts/Main_Layout'))
+// const CartLayout = lazy(() => import('../Layouts/Cart_Layout'))
+// const UserLayout = lazy(() => import('../Layouts/User_Layout'))
 
 //* Function này dùng để ngăn chặn user vào trang chủ khi chưa login
 //* Nếu user đã login (tức isAuthenticated = true) thì sẽ được chuyển đến trang chủ (được đặt trong Outlet của React-router)
@@ -44,6 +60,9 @@ function RejectedRoute() {
   return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
 
+//* Component used for lazy loading
+const loading = <div style={{ margin: '50vh auto' }}>Loading...</div>
+
 //* Routes of web
 export default function useRouteElements() {
   const routeElements = useRoutes([
@@ -55,7 +74,9 @@ export default function useRouteElements() {
           path: path.login,
           element: (
             <RegisterLayout>
-              <Login />
+              <Suspense fallback={loading}>
+                <Login />
+              </Suspense>
             </RegisterLayout>
           )
         },
@@ -63,7 +84,9 @@ export default function useRouteElements() {
           path: path.register,
           element: (
             <RegisterLayout>
-              <Register />
+              <Suspense fallback={loading}>
+                <Register />
+              </Suspense>
             </RegisterLayout>
           )
         }
@@ -77,7 +100,9 @@ export default function useRouteElements() {
           path: path.cart,
           element: (
             <CartLayout>
-              <Cart />
+              <Suspense fallback={loading}>
+                <Cart />
+              </Suspense>
             </CartLayout>
           )
         },
@@ -85,7 +110,9 @@ export default function useRouteElements() {
           path: path.home,
           element: (
             <MainLayout>
-              <UserLayout />
+              <Suspense fallback={loading}>
+                <UserLayout />
+              </Suspense>
             </MainLayout>
           ),
           children: [
@@ -111,7 +138,9 @@ export default function useRouteElements() {
       index: true,
       element: (
         <MainLayout>
-          <ProductDetail />
+          <Suspense fallback={loading}>
+            <ProductDetail />
+          </Suspense>
         </MainLayout>
       )
     },
@@ -120,7 +149,19 @@ export default function useRouteElements() {
       index: true,
       element: (
         <MainLayout>
-          <ProductLists />
+          <Suspense fallback={loading}>
+            <ProductLists />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <Suspense fallback={loading}>
+            <NotFound />
+          </Suspense>
         </MainLayout>
       )
     }

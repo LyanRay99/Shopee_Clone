@@ -1,6 +1,7 @@
 //* Library
 import React, { useRef } from 'react'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 interface InputFileProps {
   onChange?: (file?: File) => void
@@ -29,6 +30,9 @@ export default function InputFile({ onChange }: InputFileProps) {
     fileInputRef.current?.click()
   }
 
+  //* i18next
+  const { t } = useTranslation('user')
+
   return (
     <React.Fragment>
       <input
@@ -47,7 +51,7 @@ export default function InputFile({ onChange }: InputFileProps) {
         type='button'
         onClick={handleUpload}
       >
-        Chọn ảnh
+        {t('profile.selectImage')}
       </button>
     </React.Fragment>
   )

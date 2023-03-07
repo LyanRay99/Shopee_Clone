@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { useQuery } from '@tanstack/react-query'
 import { createSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 //* Utils
 import { formatCurrency } from 'src/Utils/formatCurrency'
@@ -13,17 +14,20 @@ import { getPurchaseList } from 'src/Api/purchase.api'
 import { PurchaseListStatus } from 'src/@types/purchase.type'
 import path from 'src/Constants/path'
 
-//* Status of purchase
-const purchaseTabs = [
-  { status: purchase_Status.all, name: 'Tất cả' },
-  { status: purchase_Status.waitForConfirmation, name: 'Chờ xác nhận' },
-  { status: purchase_Status.waitForGetting, name: 'Chờ lấy hàng' },
-  { status: purchase_Status.inProgress, name: 'Đang giao' },
-  { status: purchase_Status.delivered, name: 'Đã giao' },
-  { status: purchase_Status.cancelled, name: 'Đã hủy' }
-]
-
 export default function HistoryPurchase() {
+  //* i18next
+  const { t } = useTranslation('user')
+
+  //* Status of purchase
+  const purchaseTabs = [
+    { status: purchase_Status.all, name: t('myPurchase.all') },
+    { status: purchase_Status.waitForConfirmation, name: t('myPurchase.toComfirm') },
+    { status: purchase_Status.waitForGetting, name: t('myPurchase.toShip') },
+    { status: purchase_Status.inProgress, name: t('myPurchase.toReceive') },
+    { status: purchase_Status.delivered, name: t('myPurchase.completed') },
+    { status: purchase_Status.cancelled, name: t('myPurchase.cancelled') }
+  ]
+
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchase_Status.all
 
@@ -80,7 +84,7 @@ export default function HistoryPurchase() {
                 </Link>
                 <div className='flex justify-end'>
                   <div>
-                    <span>Tổng giá tiền</span>
+                    <span>{t('myPurchase.totalPrice')}</span>
                     <span className='ml-4 text-xl text-orange'>
                       ₫{formatCurrency(purchase.product.price * purchase.buy_count)}
                     </span>

@@ -1,0 +1,28 @@
+{
+  "cart": {
+    "product": "Product",
+    "unitPrice": "Unit Price",
+    "quantity": "Quantity",
+    "totalPrice": "Total Price",
+    "actions": "Actions",
+    "delete": "Delete",
+    "selectAll": "Select All",
+    "total": "Total",
+    "item": "Item",
+    "saved": "Saved",
+    "checkout": "Check Out",
+    "cartEmpty": "Your shopping cart is empty",
+    "buyNow": "Buy Now",
+    "cart": "Cart"
+  },
+  "detail": {
+    "sold": "Sold",
+    "off": "OFF",
+    "quanlity": "Quanlity",
+    "available": "available",
+    "addToCart": "Add To Cart",
+    "buyNow": "Buy Now",
+    "decription": "Product Decription",
+    "sameProduct": "FROM THE SAME SHOP"
+  }
+}

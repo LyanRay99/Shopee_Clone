@@ -14,6 +14,8 @@ interface AppContextInterface {
   extendedPurchases: ExtendedPurchases[]
   setExtendedPurchases: React.Dispatch<React.SetStateAction<ExtendedPurchases[]>>
   reset: () => void
+  isEnglish: boolean
+  setIsEnglish: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 //* giá trị khởi tạo context
@@ -24,7 +26,9 @@ const initialAppContext: AppContextInterface = {
   setProfile: () => null,
   extendedPurchases: [],
   setExtendedPurchases: () => null,
-  reset: () => null
+  reset: () => null,
+  isEnglish: false,
+  setIsEnglish: () => null
 }
 
 //* AppContext chứa các giá trị state mà ta có thê lấy ra
@@ -44,6 +48,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setExtendedPurchases([])
   }
 
+  const [isEnglish, setIsEnglish] = useState<boolean>(initialAppContext.isEnglish)
+
   return (
     <AppContext.Provider
       value={{
@@ -53,7 +59,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         setProfile,
         extendedPurchases,
         setExtendedPurchases,
-        reset
+        reset,
+        isEnglish,
+        setIsEnglish
       }}
     >
       {children}

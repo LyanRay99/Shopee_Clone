@@ -1,0 +1,36 @@
+{
+  "navProfile": {
+    "editProfile": "Edit Profile",
+    "myAccount": "My Account",
+    "changePassword": "Change Password",
+    "myPurchase": "My Purchase"
+  },
+  "profile": {
+    "myProfile": "My Profile",
+    "manage and protect your account": "Manage and protect your account",
+    "username": "Username",
+    "name": "Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "dateOfBirth": "Date of Birth",
+    "selectImage": "Select Image",
+    "fileSize": "File size maximum is 1MB",
+    "fileType": "File extension: .JPEG, .PNG"
+  },
+  "changePassword": {
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "save": "Save"
+  },
+  "myPurchase": {
+    "all": "All",
+    "toComfirm": "To Comfirm",
+    "toShip": "To Ship",
+    "toReceive": "To Receive",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "totalPrice": "Total Price"
+  }
+}

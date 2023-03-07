@@ -1,0 +1,40 @@
+{
+  "authen": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "You are not have account": "You are not have account?",
+    "You are have account": "You are have account?"
+  },
+  "aside filter": {
+    "all categories": "All Categories",
+    "search filter": "Search Filter",
+    "price range": "Price range",
+    "price range from": "₫ MIN",
+    "price range to": "₫ MAX",
+    "apply": "APPLY",
+    "review": "Review",
+    "& Up": "& Up",
+    "clear all": "CLEAR ALL"
+  },
+  "navHeader": {
+    "my purchase": "My Purchase",
+    "my profile": "My Account"
+  },
+  "header": {
+    "inputSearch": "Free Ship from order 0đ",
+    "NoProducts": "No Products Yet",
+    "recently added products": "Recently Added Products",
+    "viewCart": "View My Cart",
+    "more products in cart": "more products in cart"
+  },
+  "sortProductList": {
+    "sortBy": "Sort By",
+    "popular": "Popular",
+    "latest": "Latest",
+    "topSales": "Top Sales",
+    "price": "Price",
+    "low to high": "Price: Low to High",
+    "high to low": "Price: High to Low"
+  }
+}

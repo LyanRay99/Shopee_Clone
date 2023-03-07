@@ -12,14 +12,14 @@ function App() {
   const routeElements = useRouteElements()
   const { reset } = useContext(AppContext)
 
-  // useEffect(() => {
-  //   LocalStorageEventTarget.addEventListener('clearLS', () => reset())
+  useEffect(() => {
+    LocalStorageEventTarget.addEventListener('clearLS', () => reset())
 
-  //   //* clear event khi components unmout và ko cần dùng đến nữa
-  //   return () => {
-  //     LocalStorageEventTarget.removeEventListener('clearLS', () => reset())
-  //   }
-  // }, [reset])
+    //* clear event khi components unmout và ko cần dùng đến nữa
+    return () => {
+      LocalStorageEventTarget.removeEventListener('clearLS', () => reset())
+    }
+  }, [reset])
 
   return (
     <div>
